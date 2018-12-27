@@ -1,0 +1,41 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>glcode.js</file>
+        <file>three.js</file>
+        <file>SagFrameButton.qml</file>
+        <file>img/analiz.png</file>
+        <file>img/design.png</file>
+        <file>img/gear.png</file>
+        <file>img/start.png</file>
+        <file>KobliTextInput.qml</file>
+        <file>img/height.png</file>
+        <file>img/triangle.png</file>
+        <file>fonts/Roboto-Regular.ttf</file>
+        <file>img/pipe.png</file>
+        <file>img/yerselyuk.png</file>
+        <file>img/talveg.png</file>
+        <file>img/savak.png</file>
+        <file>img/katsayi.png</file>
+        <file>img/maksdebi.png</file>
+        <file>img/mindebi.png</file>
+        <file>img/aldebi.png</file>
+        <file>img/soil.png</file>
+        <file>img/bha.png</file>
+        <file>shaders/butonfragment.fsh</file>
+        <file>shaders/butonvertex.vsh</file>
+        <file>ControlEventSource.qml</file>
+        <file>img/favicon.png</file>
+        <file>img/favico.ico</file>
+        <file>YaziJS.js</file>
+        <file>optimer_regular.typeface.js</file>
+        <file>TextMeshClass.js</file>
+        <file>KilavuzCizgiJS.js</file>
+        <file>baglamaObje.js</file>
+        <file>ObjeDegistirici.js</file>
+        <file>img/save.png</file>
+        <file>img/open.png</file>
+        <file>img/yon.png</file>
+        <file>iletimCanvasJs.js</file>
+    </qresource>
+</RCC>
