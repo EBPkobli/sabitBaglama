@@ -454,19 +454,54 @@ Window {
 
 
             KobliTextInput{
-                id : solIlkBlokX
+                id : solIlkBlokX1
                 x : 10
                 width: 150
+
                 anchors.top: sabitCanvas3D.bottom
-                anchors.topMargin: 30
+                anchors.topMargin: 5
                 imgPath: "img/yon.png"
-                KeyNavigation.tab: solIlkBlokY.textFieldSelf
+                KeyNavigation.tab: solIlkBlokX2.textFieldSelf
                 toolTipText: "Birim Metre"
-                inputText: "2.5"
+                inputText: "6"
                 textEnteredColor : "#9404c1"
 
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "SIBX",textFieldSelf.text );
+                  GLCode.changeBoyutOBJ( "SIBX1",textFieldSelf.text );
+                }
+            }
+
+            KobliTextInput{
+                id : solIlkBlokX2
+                x : 10
+                width: 150
+                anchors.top: solIlkBlokX1.bottom
+                anchors.topMargin: 5
+                imgPath: "img/yon.png"
+                KeyNavigation.tab: zeminY.textFieldSelf
+                toolTipText: "Birim Metre"
+                inputText: "2"
+                textEnteredColor : "#2d7fc8"
+
+                textFieldSelf.onTextChanged: {
+                  GLCode.changeBoyutOBJ( "SIBX2",textFieldSelf.text );
+                }
+            }
+
+            KobliTextInput{
+                id : zeminY
+                x : 10
+                width: 150
+                anchors.top: solIlkBlokX2.bottom
+                anchors.topMargin: 5
+                imgPath: "img/yon.png"
+                KeyNavigation.tab: solIlkBlokY.textFieldSelf
+                toolTipText: "Birim Metre"
+                inputText: "1.5"
+                textEnteredColor : "#022f2a"
+
+                textFieldSelf.onTextChanged: {
+                  GLCode.changeBoyutOBJ( "ZeminY",textFieldSelf.text );
                 }
             }
 
@@ -474,12 +509,12 @@ Window {
                 id : solIlkBlokY
                 x : 10
                 width: 150
-                anchors.top: solIlkBlokX.bottom
-                anchors.topMargin: 30
+                anchors.top: zeminY.bottom
+                anchors.topMargin: 5
                 imgPath: "img/yon.png"
                 KeyNavigation.tab: ortaBlokX.textFieldSelf
                 toolTipText: "Birim Metre"
-                inputText: "3.5"
+                inputText: "3"
                 textEnteredColor : "#147461"
 
                 textFieldSelf.onTextChanged: {
@@ -487,12 +522,13 @@ Window {
                 }
             }
 
+
             KobliTextInput{
                 id : ortaBlokX
                 width: 150
                 anchors.top: sabitCanvas3D.bottom
-                anchors.topMargin: 30
-                anchors.left: solIlkBlokX.right
+                anchors.topMargin: 5
+                anchors.left: solIlkBlokX1.right
                 anchors.leftMargin: parent.width / 12
                 imgPath: "img/yon.png"
                 KeyNavigation.tab: ortaBlokY.textFieldSelf
@@ -509,7 +545,7 @@ Window {
                 x : 2
                 width: 150
                 anchors.top: ortaBlokX.bottom
-                anchors.topMargin: 30
+                anchors.topMargin: 5
                 imgPath: "img/yon.png"
                 anchors.left: solIlkBlokY.right
                 anchors.leftMargin: parent.width / 12
@@ -528,13 +564,13 @@ Window {
                 x : 2
                 width: 150
                 anchors.top: sabitCanvas3D.bottom
-                anchors.topMargin: 30
+                anchors.topMargin: 5
                 anchors.left: ortaBlokX.right
                 anchors.leftMargin: parent.width / 12
                 imgPath: "img/yon.png"
-                KeyNavigation.tab: sagBlokY.textFieldSelf
+                KeyNavigation.tab: sagSBlokY.textFieldSelf
                 toolTipText: "Birim Metre"
-                inputText: "1.5"
+                inputText: "1"
                 textEnteredColor : "#815148"
                 textFieldSelf.onTextChanged: {
                   GLCode.changeBoyutOBJ( "SAGIBX",textFieldSelf.text );
@@ -542,20 +578,56 @@ Window {
             }
 
             KobliTextInput{
-                id : sagBlokY
+                id : sagSBlokY
                 x : 2
                 width: 150
                 anchors.top: sagBlokX.bottom
-                anchors.topMargin: 30
+                anchors.topMargin: 5
                 anchors.left: ortaBlokX.right
                 anchors.leftMargin: parent.width / 12
                 imgPath: "img/yon.png"
-                KeyNavigation.tab: solIlkBlokX.textFieldSelf
+                KeyNavigation.tab: qminY.textFieldSelf
                 toolTipText: "Birim Metre"
                 inputText: "1.5"
-                textEnteredColor : "#19485d"
+                textEnteredColor : "#8c0031"
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "SAGIBY",textFieldSelf.text );
+                  GLCode.changeBoyutOBJ( "SAGSIBY",textFieldSelf.text );
+                }
+            }
+
+            KobliTextInput{
+                id : qminY
+                x : 2
+                width: 150
+                anchors.top: sagSBlokY.bottom
+                anchors.topMargin: 5
+                anchors.left: ortaBlokX.right
+                anchors.leftMargin: parent.width / 12
+                imgPath: "img/yon.png"
+                KeyNavigation.tab: qmaxY.textFieldSelf
+                toolTipText: "Birim Metre"
+                inputText: "1"
+                textEnteredColor : "#5da9b5"
+                textFieldSelf.onTextChanged: {
+                  GLCode.changeBoyutOBJ( "qminY",textFieldSelf.text );
+                }
+            }
+
+            KobliTextInput{
+                id : qmaxY
+                x : 2
+                width: 150
+                anchors.top: qminY.bottom
+                anchors.topMargin: 5
+                anchors.left: ortaBlokX.right
+                anchors.leftMargin: parent.width / 12
+                imgPath: "img/yon.png"
+                KeyNavigation.tab: solIlkBlokX1.textFieldSelf
+                toolTipText: "Birim Metre"
+                inputText: "1.5"
+                textEnteredColor : "#2c768a"
+                textFieldSelf.onTextChanged: {
+                  GLCode.changeBoyutOBJ( "qmaxY",textFieldSelf.text );
                 }
             }
 
