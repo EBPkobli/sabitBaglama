@@ -9,13 +9,17 @@ var camera, scene, renderer;
 var solIlkBlokMesh;
 var blokColor = 0x9a9a9a , frameColor = 0x000000 , frameWitdh = 1;
 var blokAralik = 2;
-var meshPosY = -10 , meshPosX = -65;
+var meshPosY = -10 , meshPosX = -80;
 var hatMeshPosY = -10 , hatMeshPosX = 80;
 var e_mX , e_mY;
-var camYariCap = 170;
+var camYariCap = 185;
 var objeGroup = new THREE.Group();
 
+var zeminBlokOBJ , zYKCizgi , zTextYStruct;
+var zeminBlok = new THREE.Group();
+
 var solIlkBlokOBJ , sIBXKCizgi , sIBYKCizgi , sIBTextXStruct, sIBTextYStruct;
+var sIBTextX2Struct , sIBX2KCizgi;
 var solBlok     = new THREE.Group();
 
 var ortaUzunBlokOBJ , oUBTextXStruct , oUBXKCizgi, oUBTextYStruct, oUBYKCizgi;
@@ -26,6 +30,9 @@ var sagBlok     = new THREE.Group();
 
 var sagSonBlokOBJ , sagSIBTextXStruct , sagSIBXKCizgi, sagSIBTextYStruct, sagSIBYKCizgi;
 var sagSonBlok     = new THREE.Group();
+
+var qminTextYStruct , qminYKCizgi;
+var qmaxTextYStruct , qmaxYKCizgi;
 
 
 function initializeGL(canvas , eventSource) {
@@ -39,8 +46,9 @@ function initializeGL(canvas , eventSource) {
     renderer = new THREE.Canvas3DRenderer({ canvas: canvas, antialias: true, devicePixelRatio: canvas.devicePixelRatio, clearDepth: true });
     renderer.setSize( canvas.width, canvas.height );
     renderer.setClearColor( 0x696969, 1);
-    renderer.gammaInput = true;
-    renderer.gammaOutput = true;
+    renderer.gammaInput     = true;
+    renderer.gammaOutput    = true;
+    renderer.antialias      = true;
 
     //*---- INIT ----*\\
     initBlokObje(objeGroup,scene);
@@ -49,10 +57,9 @@ function initializeGL(canvas , eventSource) {
     //*---- INIT ----*\\
 
 
-
     //----------------------------------- Sol İlk Blok -----------------------------------\\
-    var x1 = 25, y1 = 35;
-    var tepeX1              = 6;
+    var x1 = 60, y1 = 45;
+    var tepeX1              = 20;
     var tepeInisY1          = 10;
     var sIBParams           = ["SolIlkBlok" , 0 , y1 , tepeX1 , y1 , x1 , tepeInisY1 , x1 , 0 , 0 , 0]
     var sIBCizgiSayi        = 5;
@@ -66,7 +73,7 @@ function initializeGL(canvas , eventSource) {
 
 
     var sIBTextXAdi         = "SolBlokXText"
-    var sIBTextX            = "2.5m";
+    var sIBTextX            = "6m";
     var sIBTextXPosition    = new THREE.Vector3(sIBKonum.x + x1 / 2 -5,meshPosY - 20 /*offset*/ , 100);
     var sIBTextXRotation    = new THREE.Vector3(0, 0 , 0);
     var sIBTextXOnRenk      = 0xffffff;
@@ -76,7 +83,7 @@ function initializeGL(canvas , eventSource) {
 
     var sIBXCizgiAdi        = "SolIlkBlokX";
     var sIBXKCizgiPos       = new THREE.Vector3(sIBKonum.x + x1 / 2,meshPosY - 10 /*offset*/ , 100)
-    var sIBXKCizgiUzunluk   = 25;
+    var sIBXKCizgiUzunluk   = 60;
     var sIBXKCizgiRotation  = new THREE.Vector3(0, 0 , 90);
     var sIBXKCizgiRenk      = 0xff0000;
     var sIBXKCizgiSize      = 0.85;
@@ -84,11 +91,29 @@ function initializeGL(canvas , eventSource) {
     sIBXKCizgi              = new KilavuzCizgi(sIBXCizgiAdi,sIBXKCizgiPos,sIBXKCizgiUzunluk,
                                   sIBXKCizgiRotation,sIBXKCizgiRenk,sIBXKCizgiSize,sIBXKCizgiArrowRenk,solBlok);
 
+    var sIBTextX2Adi         = "SolBlokX2Text"
+    var sIBTextX2            = "2m";
+    var sIBTextX2Position    = new THREE.Vector3(sIBKonum.x + tepeX1 / 2 -5,meshPosY +y1 + 10 /*offset*/ , 100);
+    var sIBTextX2Rotation    = new THREE.Vector3(0, 0 , 0);
+    var sIBTextX2OnRenk      = 0xffffff;
+    var sIBTextX2YanRenk     = 0x000000;
+    sIBTextX2Struct          = new TextStruct(sIBTextX2Adi,sIBTextX2, undefined/*daha mesh yok*/ ,sIBTextX2Position ,sIBTextX2Rotation,sIBTextX2YanRenk,sIBTextX2OnRenk,solBlok)
+    newCreateText(sIBTextX2Struct);
+
+    var sIBX2CizgiAdi        = "SolIlkBlokX2";
+    var sIBX2KCizgiPos       = new THREE.Vector3(sIBKonum.x + tepeX1 / 2,meshPosY +y1 + 5/*offset*/ , 100)
+    var sIBX2KCizgiUzunluk   = 25;
+    var sIBX2KCizgiRotation  = new THREE.Vector3(0, 0 , 90);
+    var sIBX2KCizgiRenk      = 0xff0000;
+    var sIBX2KCizgiSize      = 0.85;
+    var sIBX2KCizgiArrowRenk = 0x2d7fc8
+    sIBX2KCizgi              = new KilavuzCizgi(sIBX2CizgiAdi,sIBX2KCizgiPos,sIBX2KCizgiUzunluk,
+                                  sIBX2KCizgiRotation,sIBX2KCizgiRenk,sIBX2KCizgiSize,sIBX2KCizgiArrowRenk,solBlok);
 
 
     var sIBTextYAdi         = "SolBlokYText"
-    var sIBTextY            = "3.5m";
-    var sIBTextYPosition    = new THREE.Vector3(sIBKonum.x - x1/2,meshPosY + 10 /*offset*/ , 100);
+    var sIBTextY            = "3m";
+    var sIBTextYPosition    = new THREE.Vector3(sIBKonum.x - 10 ,meshPosY + y1 / 2 - 5 + 10 , 100);
     var sIBTextYRotation    = new THREE.Vector3(0, 0 , 90);
     var sIBTextYOnRenk      = 0xffffff;
     var sIBTextYYanRenk     = 0x000000;
@@ -96,8 +121,8 @@ function initializeGL(canvas , eventSource) {
     newCreateText(sIBTextYStruct);
 
     var sIBYCizgiAdi        = "SolIlkBlokY";
-    var sIBYKCizgiPos       = new THREE.Vector3(sIBKonum.x - x1 / 2 +5,meshPosY +35/2 /*offset*/ , 100)
-    var sIBYKCizgiUzunluk   = 35;
+    var sIBYKCizgiPos       = new THREE.Vector3(sIBKonum.x - 5,meshPosY + y1 / 2 + 10 /*offset*/ , 100)
+    var sIBYKCizgiUzunluk   = 30;
     var sIBYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
     var sIBYKCizgiRenk      = 0xff0000;
     var sIBYKCizgiSize      = 0.65;
@@ -108,6 +133,47 @@ function initializeGL(canvas , eventSource) {
     objeGroup.add(solBlok);
 
     //----------------------------------- Sol İlk Blok SON-----------------------------------\\
+
+
+
+    //----------------------------------- Zemin Blok -----------------------------------\\
+
+    var zx = 30, zy = 15;
+    var zParams           = ["Zemin" , 0 , zy , zx , zy , zx , 0]
+    var zCizgiSayi        = 4;
+    var zKonum            = new THREE.Vector3(meshPosX-32,meshPosY,0);
+    var zFrame            = true;
+    var zeminColor        = 0x9b7653
+
+    zeminBlokOBJ           = new BlokObje(zParams,zCizgiSayi,zeminColor,
+                                 zKonum,zFrame,frameColor,frameWitdh,zeminBlok);
+    yeniBlokObje(zeminBlokOBJ);
+
+    var zTextYAdi         = "ZeminBlokYText"
+    var zTextY            = "1.5m";
+    var zTextYPosition    = new THREE.Vector3(sIBKonum.x - 10,meshPosY + zy / 2 - 5 , 100);
+    var zTextYRotation    = new THREE.Vector3(0, 0 , 90);
+    var zTextYOnRenk      = 0x000000;
+    var zTextYYanRenk     = 0x000000;
+    zTextYStruct          = new TextStruct(zTextYAdi,zTextY, undefined/*daha mesh yok*/ ,zTextYPosition ,zTextYRotation,zTextYYanRenk,zTextYOnRenk,zeminBlok)
+    newCreateText(zTextYStruct);
+
+    var zYCizgiAdi        = "ZeminBlokY";
+    var zYKCizgiPos       = new THREE.Vector3(sIBKonum.x - 5,meshPosY + zy / 2 /*offset*/ , 100)
+    var zYKCizgiUzunluk   = 15;
+    var zYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
+    var zYKCizgiRenk      = 0xff0000;
+    var zYKCizgiSize      = 0.65;
+    var zYKCizgiArrowRenk = 0x022f2a
+    zYKCizgi              = new KilavuzCizgi(zYCizgiAdi,zYKCizgiPos,zYKCizgiUzunluk,
+                                  zYKCizgiRotation,zYKCizgiRenk,zYKCizgiSize,zYKCizgiArrowRenk,zeminBlok);
+
+
+    objeGroup.add(zeminBlok)
+
+    //----------------------------------- Zemin Blok SON -----------------------------------\\
+
+
 
 
     //----------------------------------- Orta Blok -----------------------------------\\
@@ -169,9 +235,9 @@ function initializeGL(canvas , eventSource) {
 
     //----------------------------------- SAG ILK BLOK -----------------------------------\\
 
-    var x3 = 15, y3 = 15;
-    var sagIBParams           = ["SagIlkBlok" , 0 , y3-5 , x3-10 , y3 , x3 , y3, x3, y3+2, x3+2,y3+2, x3+2 , 0 , 0 , 0]
-    var sagIBCizgiSayi        = 7;
+    var x3 = 15, y3 = 10;
+    var sagIBParams           = ["SagIlkBlok" , 0 , y3-5 , x3-10 , y3 , x3 , y3 , x3 , 0]
+    var sagIBCizgiSayi        = 4;
     var sagIBKonum            = new THREE.Vector3(ouBKonum.x + x2 + 5 , meshPosY,0);
     var sagIBFrame            = true;
     sagIlkBlokOBJ             = new BlokObje(sagIBParams,sagIBCizgiSayi,blokColor,
@@ -180,7 +246,7 @@ function initializeGL(canvas , eventSource) {
 
 
     var sagIBTextXAdi         = "SagIlkBlokXText"
-    var sagIBTextX            = "1.5m";
+    var sagIBTextX            = "1m";
     var sagIBTextXPosition    = new THREE.Vector3(sagIBKonum.x + x3 / 2 -5,meshPosY - 20 /*offset*/ , 100)
     var sagIBTextXRotation    = new THREE.Vector3(0, 0 , 0);
     var sagIBTextXOnRenk      = 0xffffff;
@@ -201,9 +267,9 @@ function initializeGL(canvas , eventSource) {
                                       sagIBXKCizgiRenk,sagIBXKCizgiSize,sagIBXKArrowRenk,sagBlok);
 
 
-    var sagIBTextYAdi         = "SagIlkBlokYText"
-    var sagIBTextY            = "1.5m";
-    var sagIBTextYPosition    = new THREE.Vector3(sagIBKonum.x + x3 / 2,meshPosY +2 /*offset*/ , 102)
+ /*   var sagIBTextYAdi         = "SagIlkBlokYText"
+    var sagIBTextY            = "1m";
+    var sagIBTextYPosition    = new THREE.Vector3(sagIBKonum.x + x3 / 2,meshPosY +2, 102)
     var sagIBTextYRotation    = new THREE.Vector3(0, 0 , 90);
     var sagIBTextYOnRenk      = 0x000000;
     var sagIBTextYYanRenk     = 0x000000;
@@ -212,8 +278,8 @@ function initializeGL(canvas , eventSource) {
 
 
     var sagIBYCizgiAdi        = "SagIlkBlokY";
-    var sagIBYKCizgiPos       = new THREE.Vector3(sagIBKonum.x + x3 / 2 +3,meshPosY+7.5 /*offset*/ , 102)
-    var sagIBYKCizgiUzunluk   = 15;
+    var sagIBYKCizgiPos       = new THREE.Vector3(sagIBKonum.x + x3 / 2 + 3,meshPosY + y2 / 2  , 102)
+    var sagIBYKCizgiUzunluk   = 10;
     var sagIBYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
     var sagIBYKCizgiRenk      = 0xff0000;
     var sagIBYKCizgiSize      = 0.65;
@@ -221,10 +287,93 @@ function initializeGL(canvas , eventSource) {
 
     sagIBYKCizgi = new KilavuzCizgi(sagIBYCizgiAdi,sagIBYKCizgiPos,sagIBYKCizgiUzunluk,sagIBYKCizgiRotation,
                                       sagIBYKCizgiRenk,sagIBYKCizgiSize,sagIBYKArrowRenk,sagBlok);
-
+*/
     objeGroup.add(sagBlok);
 
     //----------------------------------- SAG ILK SON BLOK -----------------------------------\\
+
+    //----------------------------------- SAG SON BLOK -----------------------------------\\
+
+    var x4 = 25, y4 = 15;
+    var sagSIBParams           = ["SagSonBlok" , 0 , y4 , x4 , y4, x4 , 0]
+    var sagSIBCizgiSayi        = 3;
+    var sagSIBKonum            = new THREE.Vector3(sagIBKonum.x + x3 + 2 , meshPosY,0);
+    var sagSIBFrame            = true;
+    sagSonBlokOBJ             = new BlokObje(sagSIBParams,sagSIBCizgiSayi,blokColor,
+                                 sagSIBKonum,sagSIBFrame,frameColor,frameWitdh,sagSonBlok);
+    yeniBlokObje(sagSonBlokOBJ);
+
+
+    var sagSIBTextYAdi         = "SagSonBlokYText"
+    var sagSIBTextY            = "1.5m";
+    var sagSIBTextYPosition    = new THREE.Vector3(sagSIBKonum.x + x4 / 4,meshPosY +2 /*offset*/ , 102)
+    var sagSIBTextYRotation    = new THREE.Vector3(0, 0 , 90);
+    var sagSIBTextYOnRenk      = 0x000000;
+    var sagSIBTextYYanRenk     = 0x000000;
+    sagSIBTextYStruct          = new TextStruct(sagSIBTextYAdi,sagSIBTextY , undefined ,sagSIBTextYPosition ,sagSIBTextYRotation,sagSIBTextYYanRenk,sagSIBTextYOnRenk,sagSonBlok);
+    newCreateText(sagSIBTextYStruct);
+
+
+    var sagSIBYCizgiAdi        = "SagSonBlokY";
+    var sagSIBYKCizgiPos       = new THREE.Vector3(sagSIBKonum.x + x4 / 4 + 3,meshPosY + y4 / 2 /*offset*/ , 102)
+    var sagSIBYKCizgiUzunluk   = 15;
+    var sagSIBYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
+    var sagSIBYKCizgiRenk      = 0xff0000;
+    var sagSIBYKCizgiSize      = 0.65;
+    var sagSIBYKArrowRenk      = 0x8c0031
+
+    sagSIBYKCizgi = new KilavuzCizgi(sagSIBYCizgiAdi,sagSIBYKCizgiPos,sagSIBYKCizgiUzunluk,sagSIBYKCizgiRotation,
+                                      sagSIBYKCizgiRenk,sagSIBYKCizgiSize,sagSIBYKArrowRenk,sagSonBlok);
+
+
+    var qminTextYAdi         = "QminYText"
+    var qminTextY            = "1m";
+    var qminTextYPosition    = new THREE.Vector3(sagSIBTextYPosition.x,meshPosY + y4 + 2 /*offset*/ , 102)
+    var qminTextYRotation    = new THREE.Vector3(0, 0 , 90);
+    var qminTextYOnRenk      = 0xffffff;
+    var qminTextYYanRenk     = 0x000000;
+    qminTextYStruct          = new TextStruct(qminTextYAdi,qminTextY , undefined ,qminTextYPosition ,qminTextYRotation,qminTextYYanRenk,qminTextYOnRenk,sagSonBlok);
+    newCreateText(qminTextYStruct);
+
+
+    var qminYCizgiAdi        = "QminY";
+    var qminYKCizgiPos       = new THREE.Vector3(sagSIBYKCizgiPos.x,meshPosY + y4 + y4 / 2 /*offset*/ , 102)
+    var qminYKCizgiUzunluk   = 10;
+    var qminYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
+    var qminYKCizgiRenk      = 0xff0000;
+    var qminYKCizgiSize      = 0.65;
+    var qminYKArrowRenk      = 0x5da9b5
+
+    qminYKCizgi = new KilavuzCizgi(qminYCizgiAdi,qminYKCizgiPos,qminYKCizgiUzunluk,qminYKCizgiRotation,
+                                      qminYKCizgiRenk,qminYKCizgiSize,qminYKArrowRenk,sagSonBlok);
+
+    var qmaxTextYAdi         = "QmaxYText"
+    var qmaxTextY            = "1.5m";
+    var qmaxTextYPosition    = new THREE.Vector3(sagSIBTextYPosition.x + x4 / 2,meshPosY + y4 + 2 /*offset*/ , 102)
+    var qmaxTextYRotation    = new THREE.Vector3(0, 0 , 90);
+    var qmaxTextYOnRenk      = 0xffffff;
+    var qmaxTextYYanRenk     = 0x000000;
+    qmaxTextYStruct          = new TextStruct(qmaxTextYAdi,qmaxTextY , undefined ,qmaxTextYPosition ,qmaxTextYRotation,qmaxTextYYanRenk,qmaxTextYOnRenk,sagSonBlok);
+    newCreateText(qmaxTextYStruct);
+
+
+    var qmaxYCizgiAdi        = "QmaxY";
+    var qmaxYKCizgiPos       = new THREE.Vector3(sagSIBYKCizgiPos.x + x4 / 2,meshPosY + y4 + y4 / 2 /*offset*/ , 102)
+    var qmaxYKCizgiUzunluk   = 15;
+    var qmaxYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
+    var qmaxYKCizgiRenk      = 0xff0000;
+    var qmaxYKCizgiSize      = 0.65;
+    var qmaxYKArrowRenk      = 0x2c768a
+
+    qmaxYKCizgi = new KilavuzCizgi(qmaxYCizgiAdi,qmaxYKCizgiPos,qmaxYKCizgiUzunluk,qmaxYKCizgiRotation,
+                                      qmaxYKCizgiRenk,qmaxYKCizgiSize,qmaxYKArrowRenk,sagSonBlok);
+
+
+
+    objeGroup.add(sagSonBlok);
+
+    //----------------------------------- SAG SON SON BLOK -----------------------------------\\
+
     yaziYukle();
     scene.add(objeGroup);
     camera.position.x = 0;
@@ -320,14 +469,62 @@ function onDocumentMouseOut() {
 }
 function changeBoyutOBJ(hangiNesne,newBoyut){
 
-    if(newBoyut === 0 || newBoyut === undefined || newBoyut === "") return;
-
+    if(newBoyut === 0 || newBoyut === undefined || newBoyut === "" || parseFloat(newBoyut) <= 0) return;
+    if(solIlkBlokOBJ === undefined) return;
     switch(hangiNesne)
     {
-    case "SIBX":
-        //Şimdilik
+    case "ZeminY":
+        var eklenecekFark               = (parseFloat(newBoyut*10) - zeminBlokOBJ.parametre[2]);
+
+
+        //BLok Objesi---
+        solIlkBlokOBJ.parametre[2]      += eklenecekFark;
+        solIlkBlokOBJ.parametre[4]      += eklenecekFark;
+        changeBlokObje(solIlkBlokOBJ);
+        //--------------
+
+        //Kılavuz Çizgi
+        sIBYKCizgi.konum.y              += eklenecekFark
+        changeKilavuzCizgi(sIBYKCizgi);
+        //-----------
+
+        //TextSturct--------
+        sIBTextYStruct.textPosition.y   += eklenecekFark
+        changeText(sIBTextYStruct);
+        //TextSturct--------
+
+        //Kılavuz Çizgi
+        sIBX2KCizgi.konum.y             = meshPosY +solIlkBlokOBJ.parametre[2] + 5;
+        changeKilavuzCizgi(sIBX2KCizgi);
+        //-----------
+
+        //TextSturct--------
+        sIBTextX2Struct.textPosition.y  = meshPosY +solIlkBlokOBJ.parametre[2] + 10;
+        changeText(sIBTextX2Struct);
+        //TextSturct--------
+
+        //BLok Objesi---
+        zeminBlokOBJ.parametre[2]       = parseFloat(newBoyut) * 10;
+        zeminBlokOBJ.parametre[4]       = parseFloat(newBoyut) * 10;
+        changeBlokObje(zeminBlokOBJ);
+        //BLok Objesi---
+
+        //Kılavuz Çizgi
+        zYKCizgi.uzunluk              = parseFloat(newBoyut) * 10;
+        zYKCizgi.konum.y             = meshPosY + parseFloat(newBoyut) * 10 / 2
+        changeKilavuzCizgi(zYKCizgi);
+        //-----------
+
+        //TextSturct--------
+        zTextYStruct.text = newBoyut + "m";
+        zTextYStruct.textPosition.y   = meshPosY + parseFloat(newBoyut) * 10 / 2 - 5;
+        changeText(zTextYStruct);
+        //TextSturct--------
+
+        break;
+    case "SIBX1":
         var eklenecekFark               = (parseFloat(newBoyut*10) - solIlkBlokOBJ.parametre[5]);
-        for(var i = 1; i <objeGroup.children.length;i++)
+        for(var i = 2; i <objeGroup.children.length;i++)
         {
             objeGroup.children[i].position.x             += eklenecekFark;
         }
@@ -348,33 +545,60 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
         sIBTextXStruct.textPosition.x   = solIlkBlokOBJ.blokPos.x + solIlkBlokOBJ.parametre[5] / 2 -5;
         changeText(sIBTextXStruct);
         //TextSturct--------
+        break;
+    case "SIBX2":
+        //BLok Objesi---
+        solIlkBlokOBJ.parametre[3]      = newBoyut * 10;
+        changeBlokObje(solIlkBlokOBJ);
+        //--------------
 
+        //Kılavuz Çizgi
+        sIBX2KCizgi.uzunluk              = parseFloat(newBoyut) * 10;
+        sIBX2KCizgi.konum.x              = solIlkBlokOBJ.blokPos.x + newBoyut * 10 / 2;
+        changeKilavuzCizgi(sIBX2KCizgi);
+        //-----------
 
+        //TextSturct--------
+        sIBTextX2Struct.text = newBoyut + "m";
+        sIBTextX2Struct.textPosition.x   = solIlkBlokOBJ.blokPos.x + solIlkBlokOBJ.parametre[3] / 2 -5;
+        changeText(sIBTextX2Struct);
+        //TextSturct--------
         break;
     case "SIBY":
         //BLok Objesi---
-        solIlkBlokOBJ.parametre[2]      = newBoyut * 10;
-        solIlkBlokOBJ.parametre[4]      = newBoyut * 10;
+        solIlkBlokOBJ.parametre[2]      = newBoyut * 10 + zeminBlokOBJ.parametre[2];
+        solIlkBlokOBJ.parametre[4]      = newBoyut * 10 + zeminBlokOBJ.parametre[2];
         changeBlokObje(solIlkBlokOBJ);
         //--------------
 
         //Kılavuz Çizgi
         sIBYKCizgi.uzunluk              = parseFloat(newBoyut) * 10;
-        sIBYKCizgi.konum.y              = solIlkBlokOBJ.blokPos.y + newBoyut * 10 / 2;
+        sIBYKCizgi.konum.y              = solIlkBlokOBJ.blokPos.y+ zeminBlokOBJ.parametre[2] + newBoyut * 10 / 2;
         changeKilavuzCizgi(sIBYKCizgi);
         //-----------
 
         //TextSturct--------
         sIBTextYStruct.text             = newBoyut + "m";
-        sIBTextYStruct.textPosition.y   = solIlkBlokOBJ.blokPos.y + solIlkBlokOBJ.parametre[2] / 2 -5;
+        sIBTextYStruct.textPosition.y   = solIlkBlokOBJ.blokPos.y + zeminBlokOBJ.parametre[2] / 2 + solIlkBlokOBJ.parametre[2] / 2 -5;
         changeText(sIBTextYStruct);
         //TextSturct--------
+
+        //Kılavuz Çizgi
+        sIBX2KCizgi.konum.y             = meshPosY +solIlkBlokOBJ.parametre[2] + 5;
+        changeKilavuzCizgi(sIBX2KCizgi);
+        //-----------
+
+        //TextSturct--------
+        sIBTextX2Struct.textPosition.y  = meshPosY +solIlkBlokOBJ.parametre[2] + 10;
+        changeText(sIBTextX2Struct);
+        //TextSturct--------
+
         break;
 
     case "OUBX":
         //Şimdilik
         var eklenecekFark               = (parseFloat(newBoyut*10) - ortaUzunBlokOBJ.parametre[5]);
-        for(var i = 2; i <objeGroup.children.length;i++)
+        for(var i = 3; i <objeGroup.children.length;i++)
         {
             objeGroup.children[i].position.x             += eklenecekFark;
         }
@@ -433,13 +657,15 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
         break;
 
     case "SAGIBX":
-        //Şimdilik
         var eklenecekFark                   = (parseFloat(newBoyut*10) - sagIlkBlokOBJ.parametre[5]);
+
+        for(var i = 4; i <objeGroup.children.length;i++)
+        {
+            objeGroup.children[i].position.x             += eklenecekFark;
+        }
         //BLok Objesi---
         sagIlkBlokOBJ.parametre[5]          = newBoyut * 10;
         sagIlkBlokOBJ.parametre[7]          = newBoyut * 10;
-        sagIlkBlokOBJ.parametre[9]          = newBoyut * 10 + 2;
-        sagIlkBlokOBJ.parametre[11]         = newBoyut * 10 + 2;
         changeBlokObje(sagIlkBlokOBJ);
         //--------------
 
@@ -449,11 +675,11 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
         changeKilavuzCizgi(sagIBXKCizgi);
         //-----------
 
-        //Kılavuz Çizgi
+        /*//Kılavuz Çizgi
         sagIBYKCizgi.konum.x               = sagIlkBlokOBJ.blokPos.x + sagIlkBlokOBJ.parametre[5] / 2 +3;
         changeKilavuzCizgi(sagIBYKCizgi);
         //-----------
-
+        */
         //TextSturct--------
         sagIBTextXStruct.text = newBoyut + "m";
         sagIBTextXStruct.textPosition.x   = sagIlkBlokOBJ.blokPos.x + sagIlkBlokOBJ.parametre[5] / 2 -5;
@@ -466,26 +692,77 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
         //TextSturct--------
 
         break;
-    case "SAGIBY":
+    case "SAGSIBY":
         //BLok Objesi---
-        sagIlkBlokOBJ.parametre[4]       = newBoyut * 10;
-        sagIlkBlokOBJ.parametre[6]       = newBoyut * 10;
-        sagIlkBlokOBJ.parametre[8]       = newBoyut * 10 + 2;
-        sagIlkBlokOBJ.parametre[10]      = newBoyut * 10 + 2;
+        sagSonBlokOBJ.parametre[2]       = newBoyut * 10;
+        sagSonBlokOBJ.parametre[4]       = newBoyut * 10;
+        changeBlokObje(sagSonBlokOBJ);
+        sagIlkBlokOBJ.parametre[4]       = newBoyut * 10 - 5;
+        sagIlkBlokOBJ.parametre[6]       = newBoyut * 10 - 5;
         changeBlokObje(sagIlkBlokOBJ);
         //--------------
 
         //Kılavuz Çizgi
-        sagIBYKCizgi.uzunluk               = parseFloat(newBoyut) * 10;
-        sagIBYKCizgi.konum.y               = sagIlkBlokOBJ.blokPos.y + newBoyut * 10 / 2;
-        changeKilavuzCizgi(sagIBYKCizgi);
+        sagSIBYKCizgi.uzunluk             = parseFloat(newBoyut) * 10;
+        sagSIBYKCizgi.konum.y             = meshPosY + parseFloat(newBoyut) * 10 / 2;
+        changeKilavuzCizgi(sagSIBYKCizgi);
         //-----------
 
         //TextSturct--------
-        sagIBTextYStruct.text             = newBoyut + "m";
-        sagIBTextYStruct.textPosition.y   = sagIlkBlokOBJ.blokPos.y + sagIlkBlokOBJ.parametre[4] / 2 -5;
-        changeText(sagIBTextYStruct);
+        sagSIBTextYStruct.text             = newBoyut + "m";
+        sagSIBTextYStruct.textPosition.y   = meshPosY + parseFloat(newBoyut) * 10 / 2 - 5;
+        changeText(sagSIBTextYStruct);
         //TextSturct--------
+
+        //Kılavuz Çizgi
+        qminYKCizgi.konum.y             = meshPosY + parseFloat(newBoyut) * 10 + qminYKCizgi.uzunluk/2;
+        changeKilavuzCizgi(qminYKCizgi);
+        //-----------
+
+        //TextSturct--------
+        qminTextYStruct.textPosition.y   = meshPosY +parseFloat(newBoyut) * 10 + qminYKCizgi.uzunluk/2;
+        changeText(qminTextYStruct);
+        //TextSturct--------
+
+        //Kılavuz Çizgi
+        qmaxYKCizgi.konum.y             = meshPosY + parseFloat(newBoyut) * 10 + qmaxYKCizgi.uzunluk/2;
+        changeKilavuzCizgi(qmaxYKCizgi);
+        //-----------
+
+        //TextSturct--------
+        qmaxTextYStruct.textPosition.y   = meshPosY +parseFloat(newBoyut) * 10-5 + qmaxYKCizgi.uzunluk /2;
+        changeText(qmaxTextYStruct);
+        //TextSturct--------
+        break;
+    case "qminY":
+
+        //Kılavuz Çizgi
+        qminYKCizgi.uzunluk             = parseFloat(newBoyut) * 10
+        qminYKCizgi.konum.y             = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        changeKilavuzCizgi(qminYKCizgi);
+        //-----------
+
+        //TextSturct--------
+        qminTextYStruct.text             = newBoyut + "m";
+        qminTextYStruct.textPosition.y   = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        changeText(qminTextYStruct);
+        //TextSturct--------
+
+        break;
+    case "qmaxY":
+
+        //Kılavuz Çizgi
+        qmaxYKCizgi.uzunluk             = parseFloat(newBoyut) * 10
+        qmaxYKCizgi.konum.y             = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        changeKilavuzCizgi(qmaxYKCizgi);
+        //-----------
+
+        //TextSturct--------
+        qmaxTextYStruct.text             = newBoyut + "m";
+        qmaxTextYStruct.textPosition.y   = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        changeText(qmaxTextYStruct);
+        //TextSturct--------
+
         break;
     }
 

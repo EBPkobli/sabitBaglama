@@ -36,8 +36,9 @@ function initializeGL(canvas , eventSource) {
     renderer = new THREE.Canvas3DRenderer({ canvas: canvas, antialias: true, devicePixelRatio: canvas.devicePixelRatio, clearDepth: true });
     renderer.setSize( canvas.width, canvas.height );
     renderer.setClearColor( 0x696969, 1);
-    renderer.gammaInput = true;
-    renderer.gammaOutput = true;
+    renderer.gammaInput     = true;
+    renderer.gammaOutput    = true;
+    renderer.antialias      = true;
 
     //*---- INIT ----*\\
     initBlokObje(objeGroup,scene);

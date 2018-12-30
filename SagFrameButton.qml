@@ -26,7 +26,7 @@ Item {
     property bool checkableButton: false
     property bool myCheck: false
     scale: (state === "Pressed") ? 0.96 : 1.0
-    objectName: solFrameButton
+    //objectName: solFrameButton
     onEnabledChanged: {
         if(!button.enabled)
         {
