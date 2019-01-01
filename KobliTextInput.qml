@@ -18,7 +18,7 @@ Rectangle{
     property color textSelectedColor: "#26269a"
     property color textEmptyColor: "#111111"
     property string toolTipText: "Metre"
-    property bool basKont: true
+    property bool basKont: false
 
     FontLoader { id: robotoRegular; source: "fonts/Roboto-Regular.ttf" }
 
@@ -27,7 +27,7 @@ Rectangle{
         y : myTextArea.height / 4
         delay: 100
         timeout: 5000
-        visible: ((myTextArea.state==='textEntered' || myTextArea.state==='textSelected') && basKont) ? true : false
+        visible: (basKont) ? true : false
         text: toolTipText
     }
 
@@ -108,12 +108,13 @@ Rectangle{
         }
         onFocusChanged: {
             if(focus){
+                basKont = true;
                 if(myTextArea.state === "textEmpty")
                 {
                     myTextArea.state = "textSelected"
                 }
             }else{
-
+                basKont = false;
                 if(myTextArea.state === "textSelected")
                 {
                     if(myTextInput.length == 0)
@@ -128,7 +129,6 @@ Rectangle{
         if(myTextInput.text !== "" && myTextInput.text !== undefined)
         {
             myTextArea.state = "textEntered"
-            basKont          = false
         }else{
             myTextArea.state = "textEmpty";
         }

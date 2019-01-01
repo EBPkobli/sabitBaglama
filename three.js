@@ -37060,7 +37060,7 @@ function HtmlDiv() {
 
 THREE.Canvas3DRenderer = function ( parameters ) {
 
-    console.log( 'THREE.Canvas3DRenderer', THREE.REVISION );
+   // console.log( 'THREE.Canvas3DRenderer', THREE.REVISION );
 
 	parameters = parameters || {};
 

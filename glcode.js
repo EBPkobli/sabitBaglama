@@ -58,7 +58,7 @@ function initializeGL(canvas , eventSource) {
 
 
     //----------------------------------- Sol İlk Blok -----------------------------------\\
-    var x1 = 60, y1 = 45;
+    var x1 = 60, y1 = 75;
     var tepeX1              = 20;
     var tepeInisY1          = 10;
     var sIBParams           = ["SolIlkBlok" , 0 , y1 , tepeX1 , y1 , x1 , tepeInisY1 , x1 , 0 , 0 , 0]
@@ -112,7 +112,7 @@ function initializeGL(canvas , eventSource) {
 
 
     var sIBTextYAdi         = "SolBlokYText"
-    var sIBTextY            = "3m";
+    var sIBTextY            = "BY";
     var sIBTextYPosition    = new THREE.Vector3(sIBKonum.x - 10 ,meshPosY + y1 / 2 - 5 + 10 , 100);
     var sIBTextYRotation    = new THREE.Vector3(0, 0 , 90);
     var sIBTextYOnRenk      = 0xffffff;
@@ -122,7 +122,7 @@ function initializeGL(canvas , eventSource) {
 
     var sIBYCizgiAdi        = "SolIlkBlokY";
     var sIBYKCizgiPos       = new THREE.Vector3(sIBKonum.x - 5,meshPosY + y1 / 2 + 10 /*offset*/ , 100)
-    var sIBYKCizgiUzunluk   = 30;
+    var sIBYKCizgiUzunluk   = 60;
     var sIBYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
     var sIBYKCizgiRenk      = 0xff0000;
     var sIBYKCizgiSize      = 0.65;
@@ -467,8 +467,8 @@ function onDocumentMouseOut() {
     eventSource.mouseUp.disconnect(onDocumentMouseUp);
     eventSource.mouseOut.disconnect(onDocumentMouseOut);
 }
-function changeBoyutOBJ(hangiNesne,newBoyut){
-
+function changeBoyutOBJ(hangiNesne,newBoyut,Sonuc){
+    if(Sonuc === 0 || Sonuc === undefined || Sonuc === "") Sonuc = false;
     if(newBoyut === 0 || newBoyut === undefined || newBoyut === "" || parseFloat(newBoyut) <= 0) return;
     if(solIlkBlokOBJ === undefined) return;
     switch(hangiNesne)
@@ -565,6 +565,15 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
         //TextSturct--------
         break;
     case "SIBY":
+        var newText;
+        if(Sonuc === false)
+        {
+            newBoyut = 9;
+            newText  ="BY";
+        }else{
+            newText  = newBoyut + "m";
+        }
+
         //BLok Objesi---
         solIlkBlokOBJ.parametre[2]      = newBoyut * 10 + zeminBlokOBJ.parametre[2];
         solIlkBlokOBJ.parametre[4]      = newBoyut * 10 + zeminBlokOBJ.parametre[2];
@@ -578,7 +587,7 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
         //-----------
 
         //TextSturct--------
-        sIBTextYStruct.text             = newBoyut + "m";
+        sIBTextYStruct.text             = newText
         sIBTextYStruct.textPosition.y   = solIlkBlokOBJ.blokPos.y + zeminBlokOBJ.parametre[2] / 2 + solIlkBlokOBJ.parametre[2] / 2 -5;
         changeText(sIBTextYStruct);
         //TextSturct--------
@@ -738,13 +747,13 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
 
         //Kılavuz Çizgi
         qminYKCizgi.uzunluk             = parseFloat(newBoyut) * 10
-        qminYKCizgi.konum.y             = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        qminYKCizgi.konum.y             = meshPosY+ sagSonBlokOBJ.parametre[2] + parseFloat(newBoyut) * 10 / 2;
         changeKilavuzCizgi(qminYKCizgi);
         //-----------
 
         //TextSturct--------
         qminTextYStruct.text             = newBoyut + "m";
-        qminTextYStruct.textPosition.y   = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        qminTextYStruct.textPosition.y   = meshPosY + sagSonBlokOBJ.parametre[2] + parseFloat(newBoyut) * 10 / 2 - 4;
         changeText(qminTextYStruct);
         //TextSturct--------
 
@@ -753,13 +762,13 @@ function changeBoyutOBJ(hangiNesne,newBoyut){
 
         //Kılavuz Çizgi
         qmaxYKCizgi.uzunluk             = parseFloat(newBoyut) * 10
-        qmaxYKCizgi.konum.y             = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        qmaxYKCizgi.konum.y             = meshPosY + sagSonBlokOBJ.parametre[2] + parseFloat(newBoyut) * 10 / 2;
         changeKilavuzCizgi(qmaxYKCizgi);
         //-----------
 
         //TextSturct--------
         qmaxTextYStruct.text             = newBoyut + "m";
-        qmaxTextYStruct.textPosition.y   = meshPosY+ sagSonBlokOBJ.blokPos.y + parseFloat(newBoyut) * 10 / 2;
+        qmaxTextYStruct.textPosition.y   = meshPosY + sagSonBlokOBJ.parametre[2] + parseFloat(newBoyut) * 10 / 2 - 4;
         changeText(qmaxTextYStruct);
         //TextSturct--------
 

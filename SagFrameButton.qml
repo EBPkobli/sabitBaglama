@@ -118,8 +118,11 @@ Item {
         width: imgSize
         height: imgSize
 
-        signal mouseOnMe
+        vertexShader: "qrc:/shaders/butonvertex.vsh"
 
+        fragmentShader: "qrc:/shaders/butonfragment.fsh"
+
+        signal mouseOnMe
         Behavior on scale{
             NumberAnimation{
                 duration: 250
@@ -127,9 +130,7 @@ Item {
             }
         }
 
-        vertexShader: "qrc:/shaders/butonvertex.vsh"
 
-        fragmentShader: "qrc:/shaders/butonfragment.fsh"
     }
 
     Image {

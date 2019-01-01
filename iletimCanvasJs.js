@@ -14,13 +14,13 @@ var camYariCap = 170;
 var objeGroup = new THREE.Group();
 var evntSource;
 
-var iHatiSuOBJ , iHSXKCizgi , iHSX2KCizgi , iHSTextXStruct , iHSTextX2Struct;
+var iHatiSuOBJ , iHSXKCizgi , iHSX2KCizgi , iHSYKCizgi , iHSTextXStruct , iHSTextX2Struct , iHSTextYStruct;
 var iletimHatiSu     = new THREE.Group();
 
 var solTOBJ , solTXKCizgi , solTYKCizgi , solTTextXStruct , solTTextYStruct;
 var solTrapez     = new THREE.Group();
 
-var sagTOBJ , sagTXKCizgi , sagTXKCizgi , sagTTextXStruct , sagTTextYStruct;
+var sagTOBJ , sagTXKCizgi , sagTYKCizgi , sagTTextXStruct , sagTTextYStruct;
 var sagTrapez     = new THREE.Group();
 
 
@@ -46,20 +46,21 @@ function initializeGL(canvas , eventSource) {
     initYazi(objeGroup,scene);
     //*---- INIT ----*\\
 
+    //-----------İLETİM HATTI SU--------------
     var x1 = 60, y1 = 25;
 
     var iHSParams           = ["iletimHatiSu" , -25 , y1 , x1 , y1 , x1-25 , 0 ,0 , 0]
     var iHSCizgiSayi        = 4;
-    var iHSKonum            = new THREE.Vector3(meshPosX,meshPosY,-1);
-    var iHSFrame            = true;
+    var iHSKonum            = new THREE.Vector3(meshPosX,meshPosY,0);
+    var iHSFrame            = false;
 
     iHatiSuOBJ              = new BlokObje(iHSParams,iHSCizgiSayi,suColor,
-                                 iHSKonum,iHSFrame,frameColor,frameWitdh,iletimHatiSu);
+                                           iHSKonum,iHSFrame,frameColor,frameWitdh,iletimHatiSu);
     yeniBlokObje(iHatiSuOBJ);
 
 
     var iHSTextXAdi         = "iletimHatiSuTextX"
-    var iHSTextX            = "3.5m";
+    var iHSTextX            = "4y";
     var iHSTextXPosition    = new THREE.Vector3(iHSKonum.x + 35 / 2 -5,meshPosY - 20 /*offset*/ , 100);
     var iHSTextXRotation    = new THREE.Vector3(0, 0 , 0);
     var iHSTextXOnRenk      = 0xffffff;
@@ -76,11 +77,11 @@ function initializeGL(canvas , eventSource) {
     var iHSXKCizgiSize      = 1;
     var iHSXKCizgiArrowRenk = 0x9404c1
     iHSXKCizgi              = new KilavuzCizgi(iHSXCizgiAdi,iHSXKCizgiPos,iHSXKCizgiUzunluk,
-                                  iHSXKCizgiRotation,iHSXKCizgiRenk,iHSXKCizgiSize,iHSXKCizgiArrowRenk,iletimHatiSu);
+                                               iHSXKCizgiRotation,iHSXKCizgiRenk,iHSXKCizgiSize,iHSXKCizgiArrowRenk,iletimHatiSu);
 
 
     var iHSTextX2Adi         = "iletimHatiSuTextX2"
-    var iHSTextX2            = "8.5m";
+    var iHSTextX2            = "B";
     var iHSTextX2Position    = new THREE.Vector3(iHSKonum.x + 35 / 2 -5,meshPosY + y1 + 10 /*offset*/ , 100);
     var iHSTextX2Rotation    = new THREE.Vector3(0, 0 , 0);
     var iHSTextX2OnRenk      = 0xffffff;
@@ -97,38 +98,153 @@ function initializeGL(canvas , eventSource) {
     var iHSX2KCizgiSize      = 1;
     var iHSX2KCizgiArrowRenk = 0x9404c1
     iHSX2KCizgi              = new KilavuzCizgi(iHSX2CizgiAdi,iHSX2KCizgiPos,iHSX2KCizgiUzunluk,
-                                  iHSX2KCizgiRotation,iHSX2KCizgiRenk,iHSX2KCizgiSize,iHSX2KCizgiArrowRenk,iletimHatiSu);
+                                                iHSX2KCizgiRotation,iHSX2KCizgiRenk,iHSX2KCizgiSize,iHSX2KCizgiArrowRenk,iletimHatiSu);
+
+    var iHSTextYAdi         = "iletimHatiSuTextY"
+    var iHSTextY            = "y";
+    var iHSTextYPosition    = new THREE.Vector3(meshPosX + 35/2 - 5,meshPosY + 12.5 - 5 /*offset*/ , 100);
+    var iHSTextYRotation    = new THREE.Vector3(0, 0 , 90);
+    var iHSTextYOnRenk      = 0x000000;
+    var iHSTextYYanRenk     = 0x000000;
+    iHSTextYStruct          = new TextStruct(iHSTextYAdi,iHSTextY, undefined/*daha mesh yok*/ ,iHSTextYPosition ,iHSTextYRotation,iHSTextYYanRenk,iHSTextYOnRenk,iletimHatiSu)
+    newCreateText(iHSTextYStruct);
+
+
+    var iHSYCizgiAdi        = "İletimHatiSuYKCizgi";
+    var iHSYKCizgiPos       = new THREE.Vector3(meshPosX + 35/2,meshPosY + 12.5 /*offset*/ , 100)
+    var iHSYKCizgiUzunluk   = 25;
+    var iHSYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
+    var iHSYKCizgiRenk      = 0xff0000;
+    var iHSYKCizgiSize      = 1;
+    var iHSYKCizgiArrowRenk = 0x9404c1
+    iHSYKCizgi              = new KilavuzCizgi(iHSYCizgiAdi,iHSYKCizgiPos,iHSYKCizgiUzunluk,
+                                               iHSYKCizgiRotation,iHSYKCizgiRenk,iHSYKCizgiSize,iHSYKCizgiArrowRenk,iletimHatiSu);
+
 
     objeGroup.add(iletimHatiSu);
 
+    //-----------İLETİM HATTI SU SON--------------
 
-    var x2 = 10, y2 = 35;
+    //-----------SOL TRAPEZ--------------
 
-    var sTKParams           = ["iletimHatiSu" , -10 , y2 , x2+14 , 0]
+    var x2 = 30, y2 = 30;
+
+    var sTKParams           = ["SolTrapez" , 0 , y2 , x2 , 0]
     var sTKCizgiSayi        = 2;
     var sTKKonum            = new THREE.Vector3(meshPosX - x1 / 2 - x2 / 2 - frameWitdh + 14,meshPosY,0);
     var sTKFrame            = true;
 
     solTOBJ                 = new BlokObje(sTKParams,sTKCizgiSayi,zeminColor,
-                                 sTKKonum,sTKFrame,frameColor,frameWitdh,solTrapez);
+                                           sTKKonum,sTKFrame,frameColor,frameWitdh,solTrapez);
     yeniBlokObje(solTOBJ);
+
+    var solTTextXAdi         = "SolTrapezXText"
+    var solTTextX            = "1.5y";
+    var solTTextXPosition    = new THREE.Vector3(sTKKonum.x + x2/2 - 5,meshPosY - 20 /*offset*/ , 100);
+    var solTTextXRotation    = new THREE.Vector3(0, 0 , 0);
+    var solTTextXOnRenk      = 0xffffff;
+    var solTTextXYanRenk     = 0x000000;
+    solTTextXStruct          = new TextStruct(solTTextXAdi,solTTextX, undefined/*daha mesh yok*/ ,solTTextXPosition ,solTTextXRotation,solTTextXYanRenk,solTTextXOnRenk,solTrapez)
+    newCreateText(solTTextXStruct);
+
+
+    var solTXCizgiAdi        = "SolTrapezXKCizgi";
+    var solTXKCizgiPos       = new THREE.Vector3(sTKKonum.x +x2/2,meshPosY - 10 /*offset*/ , 100)
+    var solTXKCizgiUzunluk   = 30;
+    var solTXKCizgiRotation  = new THREE.Vector3(0, 0 , 90);
+    var solTXKCizgiRenk      = 0xff0000;
+    var solTXKCizgiSize      = 1;
+    var solTXKCizgiArrowRenk = 0x9404c1
+    solTXKCizgi              = new KilavuzCizgi(solTXCizgiAdi,solTXKCizgiPos,solTXKCizgiUzunluk,
+                                                solTXKCizgiRotation,solTXKCizgiRenk,solTXKCizgiSize,solTXKCizgiArrowRenk,solTrapez);
+
+    var solTTextYAdi         = "SolTrapezYText"
+    var solTTextY            = "y";
+    var solTTextYPosition    = new THREE.Vector3(sTKKonum.x -10 ,meshPosY + y2/2 - 3 /*offset*/ , 100);
+    var solTTextYRotation    = new THREE.Vector3(0, 0 , 90);
+    var solTTextYOnRenk      = 0x000000;
+    var solTTextYYanRenk     = 0x000000;
+    solTTextYStruct          = new TextStruct(solTTextYAdi,solTTextY, undefined/*daha mesh yok*/ ,solTTextYPosition ,solTTextYRotation,solTTextYYanRenk,solTTextYOnRenk,solTrapez)
+    newCreateText(solTTextYStruct);
+
+
+    var solTYCizgiAdi        = "SolTrapezYKCizgi";
+    var solTYKCizgiPos       = new THREE.Vector3(sTKKonum.x - 5,meshPosY + y2/2 /*offset*/ , 100)
+    var solTYKCizgiUzunluk   = 30;
+    var solTYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
+    var solTYKCizgiRenk      = 0xff0000;
+    var solTYKCizgiSize      = 1;
+    var solTYKCizgiArrowRenk = 0x9404c1
+    solTYKCizgi              = new KilavuzCizgi(solTYCizgiAdi,solTYKCizgiPos,solTYKCizgiUzunluk,
+                                                solTYKCizgiRotation,solTYKCizgiRenk,solTYKCizgiSize,solTYKCizgiArrowRenk,solTrapez);
+
+
 
     objeGroup.add(solTrapez);
 
 
+    //-----------SOL TRAPEZ SON--------------
 
-    var x3 = 10, y3 = 35;
+    //-----------SAĞ TRAPEZ--------------
 
-    var sagTKParams           = ["iletimHatiSu" , x3+20 , y3-3 , x3+14 , 0 ]
+
+    var x3 = 30, y3 = 30;
+
+    var sagTKParams           = ["SağTrapez" , x3 , y3 , x3 , 0 ]
     var sagTKCizgiSayi        = 2;
-    var sagTKKonum            = new THREE.Vector3(meshPosX + x1 / 2 + x3 / 2 + frameWitdh,meshPosY,0);
+    var sagTKKonum            = new THREE.Vector3(meshPosX + 35 + frameWitdh,meshPosY,0);
     var sagTKFrame            = true;
 
     sagTOBJ                 = new BlokObje(sagTKParams,sagTKCizgiSayi,zeminColor,
-                                 sagTKKonum,sagTKFrame,frameColor,frameWitdh,solTrapez);
+                                           sagTKKonum,sagTKFrame,frameColor,frameWitdh,solTrapez);
     yeniBlokObje(sagTOBJ);
 
+    var sagTTextXAdi         = "sagTrapezXText"
+    var sagTTextX            = "1.5y";
+    var sagTTextXPosition    = new THREE.Vector3(sagTKKonum.x + x3/2 - 5,meshPosY - 20 /*offset*/ , 100);
+    var sagTTextXRotation    = new THREE.Vector3(0, 0 , 0);
+    var sagTTextXOnRenk      = 0xffffff;
+    var sagTTextXYanRenk     = 0x000000;
+    sagTTextXStruct          = new TextStruct(sagTTextXAdi,sagTTextX, undefined/*daha mesh yok*/ ,sagTTextXPosition ,sagTTextXRotation,sagTTextXYanRenk,sagTTextXOnRenk,sagTrapez)
+    newCreateText(sagTTextXStruct);
+
+
+    var sagTXCizgiAdi        = "sagTrapezXKCizgi";
+    var sagTXKCizgiPos       = new THREE.Vector3(sagTKKonum.x +x3/2,meshPosY - 10 /*offset*/ , 100)
+    var sagTXKCizgiUzunluk   = 30;
+    var sagTXKCizgiRotation  = new THREE.Vector3(0, 0 , 90);
+    var sagTXKCizgiRenk      = 0xff0000;
+    var sagTXKCizgiSize      = 1;
+    var sagTXKCizgiArrowRenk = 0x9404c1
+    sagTXKCizgi              = new KilavuzCizgi(sagTXCizgiAdi,sagTXKCizgiPos,sagTXKCizgiUzunluk,
+                                                sagTXKCizgiRotation,sagTXKCizgiRenk,sagTXKCizgiSize,sagTXKCizgiArrowRenk,sagTrapez);
+
+    var sagTTextYAdi         = "sagTrapezYText"
+    var sagTTextY            = "y";
+    var sagTTextYPosition    = new THREE.Vector3(sagTKKonum.x + x3 + 10 ,meshPosY + y3/2 - 3 /*offset*/ , 100);
+    var sagTTextYRotation    = new THREE.Vector3(0, 0 , 90);
+    var sagTTextYOnRenk      = 0x000000;
+    var sagTTextYYanRenk     = 0x000000;
+    sagTTextYStruct          = new TextStruct(sagTTextYAdi,sagTTextY, undefined/*daha mesh yok*/ ,sagTTextYPosition ,sagTTextYRotation,sagTTextYYanRenk,sagTTextYOnRenk,sagTrapez)
+    newCreateText(sagTTextYStruct);
+
+
+    var sagTYCizgiAdi        = "sagTrapezYKCizgi";
+    var sagTYKCizgiPos       = new THREE.Vector3(sagTKKonum.x + x3 + 5,meshPosY + y3/2 /*offset*/ , 100)
+    var sagTYKCizgiUzunluk   = 30;
+    var sagTYKCizgiRotation  = new THREE.Vector3(0, 0 , 0);
+    var sagTYKCizgiRenk      = 0xff0000;
+    var sagTYKCizgiSize      = 1;
+    var sagTYKCizgiArrowRenk = 0x9404c1
+    sagTYKCizgi              = new KilavuzCizgi(sagTYCizgiAdi,sagTYKCizgiPos,sagTYKCizgiUzunluk,
+                                                sagTYKCizgiRotation,sagTYKCizgiRenk,sagTYKCizgiSize,sagTYKCizgiArrowRenk,sagTrapez);
+
+
+
+
     objeGroup.add(sagTrapez);
+
+    //-----------SAĞ TRAPEZ SON--------------
 
 
     yaziYukle();
@@ -157,8 +273,6 @@ function paintGL(canvas) {
     objeGroup.rotation.x += ( targetRotationX - objeGroup.rotation.x ) * 0.05;
     camera.lookAt(new THREE.Vector3(-camPosX,camPosY,0));
     camera.updateProjectionMatrix();
-    //changeText(0,"Halit")
-    //changeText(1,"KUBILAY")
     renderer.render(scene, camera);
 }
 
@@ -228,5 +342,65 @@ function onDocumentMouseOut() {
     evntSource.mouseUp.disconnect(onDocumentMouseUp);
     evntSource.mouseOut.disconnect(onDocumentMouseOut);
 }
+
+function changeBoyutOBJ(hangiNesne,newBoyut,Sonuc){
+
+    if(Sonuc === undefined || Sonuc === 0 || Sonuc === "") Sonuc = false;
+    if(newBoyut === 0 || newBoyut === undefined || newBoyut === "" || parseFloat(newBoyut) <= 0) return;
+    if(iHSTextXStruct === undefined) return;
+    newBoyut = (newBoyut==="1") ? "" : newBoyut;
+    switch(hangiNesne)
+    {
+    case "SuX1":
+        //TextSturct--------
+        iHSTextXStruct.text             = newBoyut + ((Sonuc === true) ? "m" : "y");
+        changeText(iHSTextXStruct);
+        //TextSturct--------
+        break;
+    case "SuX2":
+        //TextSturct--------
+        iHSTextX2Struct.text             = newBoyut+ ((Sonuc === true) ? "m" : "");
+        changeText(iHSTextX2Struct);
+        //TextSturct--------
+        break;
+    case "SuY":
+        //TextSturct--------
+        iHSTextYStruct.text             = newBoyut + ((Sonuc === true) ? "m" : "y");
+        changeText(iHSTextYStruct);
+        //TextSturct--------
+        break;
+
+    case "SolTX":
+        //TextSturct--------
+        solTTextXStruct.text             = newBoyut + ((Sonuc === true) ? "m" : "y");
+        changeText(solTTextXStruct);
+        //TextSturct--------
+        break;
+
+    case "SolTY":
+        //TextSturct--------
+        solTTextYStruct.text             = newBoyut + ((Sonuc === true) ? "m" : "y");
+        changeText(solTTextYStruct);
+        //TextSturct--------
+        break;
+
+    case "SagTX":
+        //TextSturct--------
+        sagTTextXStruct.text             = newBoyut + ((Sonuc === true) ? "m" : "y");
+        changeText(sagTTextXStruct);
+        //TextSturct--------
+        break;
+
+
+    case "SagTY":
+        //TextSturct--------
+        sagTTextYStruct.text             = newBoyut + ((Sonuc === true) ? "m" : "y");
+        changeText(sagTTextYStruct);
+        //TextSturct--------
+        break;
+    }
+}
+
+
 
 

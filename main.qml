@@ -4,6 +4,9 @@ import QtQuick.Window 2.2
 
 import "glcode.js" as GLCode
 import "iletimCanvasJs.js" as ICanvas
+import "Islemler.js" as Islem
+import "TextDoldurucu.js" as TxtDoldurucu
+import "HataKontrol.js" as Kontrol
 
 
 Window {
@@ -59,10 +62,78 @@ Window {
             imgPath: "img/analiz.png"
             toolTipText: "<b>Analiz</b>"
             m_btnMouseArea.onClicked: {
-                if(!startButton.enabled)
+
+                if(!startButton.enabled){
+
+                    //---İletim Kanal Hesap---\\
+                    var tX = solTrapezX.textFieldSelf.text;
+                    var tY = solTrapezY.textFieldSelf.text;
+                    var ta = suBlokX1.textFieldSelf.text;
+                    var qa = qalinanTextInput.textFieldSelf.text;
+                    var mk = manningTextInput.textFieldSelf.text;
+                    var j  = egimTxtInput.textFieldSelf.text;
+                    var hp = havaPayiTextInput.textFieldSelf.text;
+                    if(Kontrol.iletimCanvasCozumKontrol(tX,tY,ta,qa,mk,j,hp))return;
+                    Islem.iletimCanvasCozum(tX,tY,ta,qa,mk,j,hp)
+
+                    TxtDoldurucu.initDoldurucu(Islem);
+                    TxtDoldurucu.iletimKanalText(qRJFormul,iletimAlan,
+                                                 iletimCevre,iletimCap,qRJSonuc,
+                                                 ySonuc,tabanSonuc
+                                                 ,bSonuc,kanalUstKotSonuc)
+                    sabitCanvas3D2.height = parent.height / 1.7;
+                    sabitCanvas3D.height = parent.height / 1.7;
+                    var xonuc = parseFloat(Islem.tX * Islem.iletimY).toFixed(3);
+                    var yonuc = parseFloat(Islem.tY * Islem.iletimY).toFixed(3);
+                    ICanvas.changeBoyutOBJ( "SolTX",xonuc,true);
+                    ICanvas.changeBoyutOBJ( "SolTY",yonuc,true);
+
+                    ICanvas.changeBoyutOBJ( "SagTX",xonuc,true);
+                    ICanvas.changeBoyutOBJ( "SagTY",yonuc,true);
+
+                    ICanvas.changeBoyutOBJ( "SuX1",Islem.tabanSonuc,true);
+                    ICanvas.changeBoyutOBJ( "SuX2",Islem.GenislikSonuc,true);
+                    ICanvas.changeBoyutOBJ( "SuY", yonuc,true);
+                    //---İletim Kanal Hesap---\\
+
+                    //---Bağlama Hesap---\\
+                    var qmin = qminTextInput.textFieldSelf.text
+                    var qal  = qalinanTextInput.textFieldSelf.text;
+                    var cs   = savakKatSayiTxtInput.textFieldSelf.text;
+                    var bnb  = baglamaNetBoyuTxtInput.textFieldSelf.text;
+                    var ktk  = tabanKotuTxtInput.textFieldSelf.text;
+                    var sy   = yonuc;
+                    var yyk  = yerselYukTxtInput.textFieldSelf.text;
+                    var kb   = iletimKanalTxtInput.textFieldSelf.text;
+                    var egim = j;
+                    var tk   = talvegKotTxtInput.textFieldSelf.text;
+                    Islem.baglamaBYBulma(qmin,qal,cs,bnb,ktk,sy,yyk,kb,egim,tk);
+                    console.log(Islem.BY);
+
+                    //---Bağlama Hesap---\\
                     startButton.enabled = true;
-                else
+                    iletimCanvasTextInputlar.visible = false;
+                    iletimCanvasSonuc.visible = true;
+                    baglamaSonuc.visible = true;
+                }else{
+                    sabitCanvas3D2.height = parent.height / 1.5;
+                    sabitCanvas3D.height = parent.height / 1.5;
+
+                    ICanvas.changeBoyutOBJ( "SolTX",solTrapezX.textFieldSelf.text);
+                    ICanvas.changeBoyutOBJ( "SolTY",solTrapezY.textFieldSelf.text);
+
+                    ICanvas.changeBoyutOBJ( "SagTX",solTrapezX.textFieldSelf.text);
+                    ICanvas.changeBoyutOBJ( "SagTY",solTrapezY.textFieldSelf.text);
+
+                    ICanvas.changeBoyutOBJ( "SuX1",suBlokX1.textFieldSelf.text);
+                    ICanvas.changeBoyutOBJ( "SuX2","B");
+                    ICanvas.changeBoyutOBJ( "SuY", solTrapezY.textFieldSelf.text);
+
                     startButton.enabled = false;
+                    iletimCanvasTextInputlar.visible = true;
+                    iletimCanvasSonuc.visible = false;
+                    baglamaSonuc.visible = false;
+                }
             }
 
         }
@@ -121,6 +192,7 @@ Window {
             anchors.top: tabanKotuTxt.bottom
             anchors.topMargin: 15
             x : 10
+            inputText: "600"
             imgPath: "img/height.png"
             KeyNavigation.tab: iletimKanalTxtInput.textFieldSelf
             toolTipText: "Birim : Metre"
@@ -139,6 +211,7 @@ Window {
             x : 10
             anchors.top: iletimKanalTxt.bottom
             anchors.topMargin: 15
+            inputText: "10000"
             imgPath: "img/pipe.png"
             KeyNavigation.tab: egimTxtInput.textFieldSelf
             toolTipText: "Birim Metre"
@@ -159,6 +232,7 @@ Window {
             anchors.top: egimTxt.bottom
             anchors.topMargin: 15
             imgPath: "img/triangle.png"
+            inputText: "0.0005"
             KeyNavigation.tab: yerselYukTxtInput.textFieldSelf
             toolTipText: "Birimsiz."
         }
@@ -177,6 +251,7 @@ Window {
             x : 10
             anchors.top: yerselYukTxt.bottom
             anchors.topMargin: 15
+            inputText: "0.40"
             imgPath: "img/yerselyuk.png"
             KeyNavigation.tab: talvegKotTxtInput.textFieldSelf
             toolTipText: "Birim Metre"
@@ -196,6 +271,7 @@ Window {
             x : 10
             anchors.top: talvegKotTxt.bottom
             anchors.topMargin: 15
+            inputText: "595"
             imgPath: "img/talveg.png"
             KeyNavigation.tab: savakKatSayiTxtInput.textFieldSelf
             toolTipText: "Birim Metre"
@@ -204,7 +280,7 @@ Window {
         Text {
             id : savakKatSayiTxt
             anchors.left: tabanKotuTxt.right
-            anchors.leftMargin: 150
+            anchors.leftMargin: 120
             y : 5
             wrapMode: Text.WordWrap
             font { family: robotoRegular.name; pixelSize: 20;}
@@ -215,6 +291,7 @@ Window {
             anchors.top: savakKatSayiTxt.bottom
             anchors.left: savakKatSayiTxt.left
             anchors.topMargin: 15
+            inputText: "2.0"
             imgPath: "img/savak.png"
             KeyNavigation.tab: laneKatSayiTxtInput.textFieldSelf
             toolTipText: "Birimsiz."
@@ -234,6 +311,7 @@ Window {
             anchors.top: laneKatSayiTxt.bottom
             anchors.left: laneKatSayiTxt.left
             anchors.topMargin: 15
+            inputText: "4.0"
             imgPath: "img/katsayi.png"
             KeyNavigation.tab: baglamaNetBoyuTxtInput.textFieldSelf
             toolTipText: "Birimsiz."
@@ -253,6 +331,7 @@ Window {
             anchors.top: baglamaNetBoyuTxt.bottom
             anchors.left: baglamaNetBoyuTxt.left
             anchors.topMargin: 15
+            inputText: "50"
             imgPath: "img/height.png"
             KeyNavigation.tab: qmaksTextInput.textFieldSelf
             toolTipText: "Birim Metre"
@@ -272,6 +351,7 @@ Window {
             anchors.top: qmaksText.bottom
             anchors.left: qmaksText.left
             anchors.topMargin: 15
+            inputText: "200"
             imgPath: "img/maksdebi.png"
             KeyNavigation.tab: qminTextInput.textFieldSelf
             toolTipText: "Birim m³/sn"
@@ -291,6 +371,7 @@ Window {
             anchors.top: qminText.bottom
             anchors.left: qminText.left
             anchors.topMargin: 15
+            inputText: "30"
             imgPath: "img/mindebi.png"
             KeyNavigation.tab: qalinanTextInput.textFieldSelf
             toolTipText: "Birim m³/sn"
@@ -300,7 +381,7 @@ Window {
             id : qalinanText
             y : 5
             anchors.left: savakKatSayiTxt.right
-            anchors.leftMargin: 160
+            anchors.leftMargin: 120
             wrapMode: Text.WordWrap
             font { family: robotoRegular.name; pixelSize: 20;}
             text: qsTr("Alınan Debi (Qalınan)")
@@ -310,6 +391,7 @@ Window {
             anchors.top: qalinanText.bottom
             anchors.left: qalinanText.left
             anchors.topMargin: 15
+            inputText: "10"
             imgPath: "img/aldebi.png"
             KeyNavigation.tab: bhaTextInput.textFieldSelf
             toolTipText: "Birim m³/sn"
@@ -329,6 +411,7 @@ Window {
             anchors.top: bhaText.bottom
             anchors.left: bhaText.left
             anchors.topMargin: 15
+            inputText: "2.4"
             imgPath: "img/bha.png"
             KeyNavigation.tab: surtunmeKSTextInput.textFieldSelf
             toolTipText: "Birim t/m³"
@@ -348,6 +431,7 @@ Window {
             anchors.top: surtunmeKSText.bottom
             anchors.left: surtunmeKSText.left
             anchors.topMargin: 15
+            inputText: "0.75"
             imgPath: "img/katsayi.png"
             KeyNavigation.tab: manningTextInput.textFieldSelf
             toolTipText: "Birimsiz"
@@ -367,6 +451,7 @@ Window {
             anchors.top: manningText.bottom
             anchors.left: manningText.left
             anchors.topMargin: 15
+            inputText: "0.012"
             imgPath: "img/katsayi.png"
             KeyNavigation.tab: zeminEmnTextInput.textFieldSelf
             toolTipText: "Birim m³/sn"
@@ -386,9 +471,31 @@ Window {
             anchors.top: zeminEmnText.bottom
             anchors.left: zeminEmnText.left
             anchors.topMargin: 15
+            inputText: "15"
             imgPath: "img/soil.png"
-            KeyNavigation.tab: tabanKotuTxtInput.textFieldSelf
+            KeyNavigation.tab: havaPayiTextInput.textFieldSelf
             toolTipText: "Birim kg/cm²"
+        }
+
+        Text {
+            id : havaPayiText
+            y : 5
+            anchors.left: qalinanText.right
+            anchors.leftMargin: 120
+            wrapMode: Text.WordWrap
+            font { family: robotoRegular.name; pixelSize: 20;}
+            text: qsTr("Hava Payı")
+        }
+
+        KobliTextInput{
+            id : havaPayiTextInput
+            anchors.top: havaPayiText.bottom
+            anchors.left: havaPayiText.left
+            anchors.topMargin: 15
+            inputText: "0.15"
+            imgPath: "img/yon.png"
+            KeyNavigation.tab: tabanKotuTxtInput.textFieldSelf
+            toolTipText: "Birim Metre"
         }
 
 
@@ -410,8 +517,8 @@ Window {
             width: parent.width / 2 - 7.5
             height: parent.height - 10
             color : "#cfcfcf"
-            border.color: "#262626"
-            border.width: 1
+            //border.color: "#262626"
+            //border.width: 1
 
             Text {
                 id : sabitCanvasText
@@ -467,7 +574,7 @@ Window {
                 textEnteredColor : "#9404c1"
 
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "SIBX1",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "SIBX1",textFieldSelf.text );
                 }
             }
 
@@ -484,7 +591,7 @@ Window {
                 textEnteredColor : "#2d7fc8"
 
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "SIBX2",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "SIBX2",textFieldSelf.text );
                 }
             }
 
@@ -495,17 +602,17 @@ Window {
                 anchors.top: solIlkBlokX2.bottom
                 anchors.topMargin: 5
                 imgPath: "img/yon.png"
-                KeyNavigation.tab: solIlkBlokY.textFieldSelf
+                KeyNavigation.tab: ortaBlokX.textFieldSelf
                 toolTipText: "Birim Metre"
                 inputText: "1.5"
                 textEnteredColor : "#022f2a"
 
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "ZeminY",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "ZeminY",textFieldSelf.text );
                 }
             }
-
-            KobliTextInput{
+            //burası
+            /*KobliTextInput{
                 id : solIlkBlokY
                 x : 10
                 width: 150
@@ -518,9 +625,9 @@ Window {
                 textEnteredColor : "#147461"
 
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "SIBY",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "SIBY",textFieldSelf.text );
                 }
-            }
+            }*/
 
 
             KobliTextInput{
@@ -536,7 +643,7 @@ Window {
                 inputText: "8.5"
                 textEnteredColor : "#539823"
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "OUBX",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "OUBX",textFieldSelf.text );
                 }
             }
 
@@ -547,7 +654,7 @@ Window {
                 anchors.top: ortaBlokX.bottom
                 anchors.topMargin: 5
                 imgPath: "img/yon.png"
-                anchors.left: solIlkBlokY.right
+                anchors.left: solIlkBlokX1.right
                 anchors.leftMargin: parent.width / 12
                 KeyNavigation.tab: sagBlokX.textFieldSelf
                 toolTipText: "Birim Metre"
@@ -555,7 +662,7 @@ Window {
                 inputText: "1"
                 textEnteredColor : "#111111"
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "OUBY",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "OUBY",textFieldSelf.text );
                 }
             }
 
@@ -573,7 +680,7 @@ Window {
                 inputText: "1"
                 textEnteredColor : "#815148"
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "SAGIBX",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "SAGIBX",textFieldSelf.text );
                 }
             }
 
@@ -591,7 +698,7 @@ Window {
                 inputText: "1.5"
                 textEnteredColor : "#8c0031"
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "SAGSIBY",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "SAGSIBY",textFieldSelf.text );
                 }
             }
 
@@ -609,7 +716,7 @@ Window {
                 inputText: "1"
                 textEnteredColor : "#5da9b5"
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "qminY",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "qminY",textFieldSelf.text );
                 }
             }
 
@@ -627,10 +734,54 @@ Window {
                 inputText: "1.5"
                 textEnteredColor : "#2c768a"
                 textFieldSelf.onTextChanged: {
-                  GLCode.changeBoyutOBJ( "qmaxY",textFieldSelf.text );
+                    GLCode.changeBoyutOBJ( "qmaxY",textFieldSelf.text );
                 }
             }
+            Rectangle{
+                id : baglamaSonuc
+                width: parent.width - 4
+                height: sabitCanvasRect.height - sabitCanvas3D.height -5
+                x : 2
+                z : 0
+                color : "transparent"
+                anchors.top: sabitCanvas3D.bottom
+                anchors.topMargin: 5
+                visible: false
 
+
+                Text {
+                    id : qFarkText
+                    x : 2
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+                Text{
+                    id : qCBHFormul
+                    x : 2
+                    anchors.top: qFarkText.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+
+                }
+                Text{
+                    id : bKretKotu
+                    x : 2
+                    anchors.top: qCBHFormul.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+
+                }
+                Text{
+                    id : bYukseklik
+                    x : 2
+                    anchors.top: bKretKotu.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+            }
 
         }
 
@@ -642,8 +793,8 @@ Window {
             width: parent.width / 2 - 7.5
             height: parent.height - 10
             color : "#cfcfcf"
-            border.color: "#262626"
-            border.width: 1
+            //border.color: "#262626"
+           // border.width: 1
 
 
             Text {
@@ -659,6 +810,7 @@ Window {
             Canvas3D {
                 id: sabitCanvas3D2
                 x : 2
+                z : 1
                 anchors.top: iletimCanvasText.bottom
                 anchors.topMargin: 10
                 width: parent.width - 4
@@ -684,6 +836,235 @@ Window {
                     id: eventSource2
                 }
             }
+            Rectangle{
+                id : iletimCanvasTextInputlar
+                width: parent.width - 4
+                height: iletimKanalCanvasRect.height - sabitCanvas3D2.height -5
+                x : 2
+                z : 0
+                color : "transparent"
+                anchors.top: sabitCanvas3D2.bottom
+                anchors.topMargin: 5
+
+                KobliTextInput{
+                    id : solTrapezX
+                    x : 10
+                    width: 150
+
+
+                    imgPath: "img/yon.png"
+                    KeyNavigation.tab: solTrapezY.textFieldSelf
+                    toolTipText: "Birimsiz (Oran)"
+                    inputText: "1.5"
+                    textEnteredColor : "#9404c1"
+
+                    textFieldSelf.onTextChanged: {
+                        sagTrapezX.textFieldSelf.text = textFieldSelf.text
+                        ICanvas.changeBoyutOBJ( "SolTX",textFieldSelf.text );
+                    }
+                }
+                KobliTextInput{
+                    id : solTrapezY
+                    x : 10
+                    width: 150
+                    anchors.top: solTrapezX.bottom
+                    anchors.topMargin: 5
+                    imgPath: "img/yon.png"
+                    KeyNavigation.tab: suBlokX1.textFieldSelf
+                    toolTipText: "Birimsiz (Oran)"
+                    inputText: "1"
+                    textEnteredColor : "#2d7fc8"
+
+                    textFieldSelf.onTextChanged: {
+                        sagTrapezY.textFieldSelf.text   = textFieldSelf.text;
+                        suBlokY.textFieldSelf.text      = textFieldSelf.text;
+                        ICanvas.changeBoyutOBJ( "SolTY",textFieldSelf.text );
+                    }
+                }
+
+                KobliTextInput{
+                    id : suBlokX1
+                    width: 150
+                    anchors.left: solTrapezX.right
+                    anchors.leftMargin: parent.width / 12
+                    imgPath: "img/yon.png"
+                    KeyNavigation.tab: suBlokY.textFieldSelf
+                    toolTipText: "Birim Metre"
+                    inputText: "4"
+                    textEnteredColor : "#539823"
+                    textFieldSelf.onTextChanged: {
+                        ICanvas.changeBoyutOBJ( "SuX1",textFieldSelf.text );
+                    }
+                }
+
+                /*KobliTextInput{
+                    id : suBlokX2
+                    width: 150
+                    anchors.top: suBlokX1.bottom
+                    anchors.topMargin: 5
+                    anchors.left: solTrapezX.right
+                    anchors.leftMargin: parent.width / 12
+                    imgPath: "img/yon.png"
+                    KeyNavigation.tab: suBlokY.textFieldSelf
+                    toolTipText: "Birim Metre"
+                    inputText: "8.5"
+                    textEnteredColor : "#2d7fc8"
+
+                    textFieldSelf.onTextChanged: {
+                      ICanvas.changeBoyutOBJ( "SuX2",textFieldSelf.text );
+                    }
+                }
+                */
+                KobliTextInput{
+                    id : suBlokY
+                    x : 10
+                    width: 150
+                    anchors.top: suBlokX1.bottom
+                    anchors.topMargin: 5
+                    anchors.left: solTrapezX.right
+                    anchors.leftMargin: parent.width / 12
+                    imgPath: "img/yon.png"
+                    KeyNavigation.tab: sagTrapezX.textFieldSelf
+                    toolTipText: "Birim Metre"
+                    inputText: "1"
+                    textEnteredColor : "#2d7fc8"
+
+                    textFieldSelf.onTextChanged: {
+                        solTrapezY.textFieldSelf.text   = textFieldSelf.text;
+                        sagTrapezY.textFieldSelf.text   = textFieldSelf.text;
+                        ICanvas.changeBoyutOBJ( "SuY",textFieldSelf.text );
+                    }
+                }
+
+                KobliTextInput{
+                    id : sagTrapezX
+                    x : 2
+                    width: 150
+                    anchors.left: suBlokX1.right
+                    anchors.leftMargin: parent.width / 12
+                    imgPath: "img/yon.png"
+                    KeyNavigation.tab: sagTrapezY.textFieldSelf
+                    toolTipText: "Birimsiz (Oran)"
+                    inputText: "1.5"
+                    textEnteredColor : "#815148"
+                    textFieldSelf.onTextChanged: {
+                        solTrapezX.textFieldSelf.text = textFieldSelf.text;
+                        ICanvas.changeBoyutOBJ( "SagTX",textFieldSelf.text );
+                    }
+                }
+                KobliTextInput{
+                    id : sagTrapezY
+                    x : 2
+                    width: 150
+                    anchors.top: sagTrapezX.bottom
+                    anchors.topMargin: 5
+                    anchors.left: suBlokX1.right
+                    anchors.leftMargin: parent.width / 12
+                    imgPath: "img/yon.png"
+                    KeyNavigation.tab: solTrapezX.textFieldSelf
+                    toolTipText: "Birimsiz (Oran)"
+                    inputText: "1"
+                    textEnteredColor : "#8c0031"
+                    textFieldSelf.onTextChanged: {
+                        solTrapezY.textFieldSelf.text   = textFieldSelf.text;
+                        suBlokY.textFieldSelf.text      = textFieldSelf.text;
+                        ICanvas.changeBoyutOBJ( "SagTY",textFieldSelf.text );
+                    }
+                }
+            }
+
+            Rectangle{
+                id : iletimCanvasSonuc
+                width: parent.width - 4
+                height: iletimKanalCanvasRect.height - sabitCanvas3D2.height -5
+                x : 2
+                z : 0
+                color : "transparent"
+                anchors.top: sabitCanvas3D2.bottom
+                anchors.topMargin: 5
+                visible: false
+
+
+                Text {
+                    id : qRJFormul
+                    x : 2
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+                Text{
+                    id : iletimAlan
+                    x : 2
+                    anchors.top: qRJFormul.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+
+                }
+                Text{
+                    id : iletimCevre
+                    x : 2
+                    anchors.top: iletimAlan.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+
+                }
+                Text{
+                    id : iletimCap
+                    x : 2
+                    anchors.top: iletimCevre.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+                Text{
+                    id : qRJSonuc
+                    x : 2
+                    anchors.top: iletimCap.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+                Text{
+                    id : ySonuc
+                    x : 2
+                    anchors.top: qRJSonuc.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+                Text{
+                    id : tabanSonuc
+                    x : 2
+                    anchors.top: ySonuc.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+                Text{
+                    id : bSonuc
+                    x : 2
+                    anchors.top: tabanSonuc.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+                Text{
+                    id : kanalUstKotSonuc
+                    x : 2
+                    anchors.top: bSonuc.bottom
+                    anchors.topMargin : parent.height / 26
+                    wrapMode: Text.WordWrap
+                    font { family: robotoRegular.name; pixelSize: 14;}
+                }
+            }
+
+
+
+
+
+
+
 
         }
 

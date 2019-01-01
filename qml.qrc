@@ -36,5 +36,8 @@
         <file>img/open.png</file>
         <file>img/yon.png</file>
         <file>iletimCanvasJs.js</file>
+        <file>Islemler.js</file>
+        <file>HataKontrol.js</file>
+        <file>TextDoldurucu.js</file>
     </qresource>
 </RCC>
