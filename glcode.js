@@ -14,7 +14,7 @@ var hatMeshPosY = -10 , hatMeshPosX = 80;
 var e_mX , e_mY;
 var camYariCap = 185;
 var objeGroup = new THREE.Group();
-
+var evntsource;
 var zeminBlokOBJ , zYKCizgi , zTextYStruct;
 var zeminBlok = new THREE.Group();
 
@@ -39,8 +39,9 @@ function initializeGL(canvas , eventSource) {
 
     window.innerWidth = canvas.width;
     window.innerHeight = canvas.height;
-    eventSource.mouseDown.connect(onDocumentMouseDown);
-    eventSource.mouseWheel.connect(onDocumentMouseWheel);
+    evntsource = eventSource;
+    evntsource.mouseDown.connect(onDocumentMouseDown);
+    evntsource.mouseWheel.connect(onDocumentMouseWheel);
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera( 100, canvas.width/canvas.height, 0.1, 1000 );
     renderer = new THREE.Canvas3DRenderer({ canvas: canvas, antialias: true, devicePixelRatio: canvas.devicePixelRatio, clearDepth: true });
@@ -67,7 +68,7 @@ function initializeGL(canvas , eventSource) {
     var sIBFrame            = true;
 
     solIlkBlokOBJ           = new BlokObje(sIBParams,sIBCizgiSayi,blokColor,
-                                 sIBKonum,sIBFrame,frameColor,frameWitdh,solBlok);
+                                           sIBKonum,sIBFrame,frameColor,frameWitdh,solBlok);
     yeniBlokObje(solIlkBlokOBJ);
 
 
@@ -89,7 +90,7 @@ function initializeGL(canvas , eventSource) {
     var sIBXKCizgiSize      = 0.85;
     var sIBXKCizgiArrowRenk = 0x9404c1
     sIBXKCizgi              = new KilavuzCizgi(sIBXCizgiAdi,sIBXKCizgiPos,sIBXKCizgiUzunluk,
-                                  sIBXKCizgiRotation,sIBXKCizgiRenk,sIBXKCizgiSize,sIBXKCizgiArrowRenk,solBlok);
+                                               sIBXKCizgiRotation,sIBXKCizgiRenk,sIBXKCizgiSize,sIBXKCizgiArrowRenk,solBlok);
 
     var sIBTextX2Adi         = "SolBlokX2Text"
     var sIBTextX2            = "2m";
@@ -108,7 +109,7 @@ function initializeGL(canvas , eventSource) {
     var sIBX2KCizgiSize      = 0.85;
     var sIBX2KCizgiArrowRenk = 0x2d7fc8
     sIBX2KCizgi              = new KilavuzCizgi(sIBX2CizgiAdi,sIBX2KCizgiPos,sIBX2KCizgiUzunluk,
-                                  sIBX2KCizgiRotation,sIBX2KCizgiRenk,sIBX2KCizgiSize,sIBX2KCizgiArrowRenk,solBlok);
+                                                sIBX2KCizgiRotation,sIBX2KCizgiRenk,sIBX2KCizgiSize,sIBX2KCizgiArrowRenk,solBlok);
 
 
     var sIBTextYAdi         = "SolBlokYText"
@@ -128,7 +129,7 @@ function initializeGL(canvas , eventSource) {
     var sIBYKCizgiSize      = 0.65;
     var sIBYKCizgiArrowRenk = 0x147461
     sIBYKCizgi              = new KilavuzCizgi(sIBYCizgiAdi,sIBYKCizgiPos,sIBYKCizgiUzunluk,
-                                  sIBYKCizgiRotation,sIBYKCizgiRenk,sIBYKCizgiSize,sIBYKCizgiArrowRenk,solBlok);
+                                               sIBYKCizgiRotation,sIBYKCizgiRenk,sIBYKCizgiSize,sIBYKCizgiArrowRenk,solBlok);
 
     objeGroup.add(solBlok);
 
@@ -146,7 +147,7 @@ function initializeGL(canvas , eventSource) {
     var zeminColor        = 0x9b7653
 
     zeminBlokOBJ           = new BlokObje(zParams,zCizgiSayi,zeminColor,
-                                 zKonum,zFrame,frameColor,frameWitdh,zeminBlok);
+                                          zKonum,zFrame,frameColor,frameWitdh,zeminBlok);
     yeniBlokObje(zeminBlokOBJ);
 
     var zTextYAdi         = "ZeminBlokYText"
@@ -166,7 +167,7 @@ function initializeGL(canvas , eventSource) {
     var zYKCizgiSize      = 0.65;
     var zYKCizgiArrowRenk = 0x022f2a
     zYKCizgi              = new KilavuzCizgi(zYCizgiAdi,zYKCizgiPos,zYKCizgiUzunluk,
-                                  zYKCizgiRotation,zYKCizgiRenk,zYKCizgiSize,zYKCizgiArrowRenk,zeminBlok);
+                                             zYKCizgiRotation,zYKCizgiRenk,zYKCizgiSize,zYKCizgiArrowRenk,zeminBlok);
 
 
     objeGroup.add(zeminBlok)
@@ -183,7 +184,7 @@ function initializeGL(canvas , eventSource) {
     var ouBKonum            = new THREE.Vector3(sIBKonum.x + x1 + 5/*1 birim uzaklık*/,meshPosY,0);
     var ouBFrame            = true;
     ortaUzunBlokOBJ         = new BlokObje(ouBParams,ouBCizgiSayi,blokColor,
-                                 ouBKonum,ouBFrame,frameColor,frameWitdh,ortaBlok);
+                                           ouBKonum,ouBFrame,frameColor,frameWitdh,ortaBlok);
     yeniBlokObje(ortaUzunBlokOBJ);
 
 
@@ -205,7 +206,7 @@ function initializeGL(canvas , eventSource) {
     var oUBXKArrowRenk      = 0x539823
 
     oUBXKCizgi = new KilavuzCizgi(oUBXCizgiAdi,oUBXKCizgiPos,oUBXKCizgiUzunluk,oUBXKCizgiRotation,
-                                      oUBXKCizgiRenk,oUBXKCizgiSize,oUBXKArrowRenk,ortaBlok);
+                                  oUBXKCizgiRenk,oUBXKCizgiSize,oUBXKArrowRenk,ortaBlok);
 
     var oUBTextYAdi         = "OrtaBlokYText"
     var oUBTextY            = "1m";
@@ -226,7 +227,7 @@ function initializeGL(canvas , eventSource) {
     var oUBYKArrowRenk      = 0x111111
 
     oUBYKCizgi = new KilavuzCizgi(oUBYCizgiAdi,oUBYKCizgiPos,oUBYKCizgiUzunluk,oUBYKCizgiRotation,
-                                      oUBYKCizgiRenk,oUBYKCizgiSize,oUBYKArrowRenk,ortaBlok);
+                                  oUBYKCizgiRenk,oUBYKCizgiSize,oUBYKArrowRenk,ortaBlok);
 
     objeGroup.add(ortaBlok);
 
@@ -241,7 +242,7 @@ function initializeGL(canvas , eventSource) {
     var sagIBKonum            = new THREE.Vector3(ouBKonum.x + x2 + 5 , meshPosY,0);
     var sagIBFrame            = true;
     sagIlkBlokOBJ             = new BlokObje(sagIBParams,sagIBCizgiSayi,blokColor,
-                                 sagIBKonum,sagIBFrame,frameColor,frameWitdh,sagBlok);
+                                             sagIBKonum,sagIBFrame,frameColor,frameWitdh,sagBlok);
     yeniBlokObje(sagIlkBlokOBJ);
 
 
@@ -264,10 +265,10 @@ function initializeGL(canvas , eventSource) {
     var sagIBXKArrowRenk      = 0x815148
 
     sagIBXKCizgi = new KilavuzCizgi(sagIBXCizgiAdi,sagIBXKCizgiPos,sagIBXKCizgiUzunluk,sagIBXKCizgiRotation,
-                                      sagIBXKCizgiRenk,sagIBXKCizgiSize,sagIBXKArrowRenk,sagBlok);
+                                    sagIBXKCizgiRenk,sagIBXKCizgiSize,sagIBXKArrowRenk,sagBlok);
 
 
- /*   var sagIBTextYAdi         = "SagIlkBlokYText"
+    /*   var sagIBTextYAdi         = "SagIlkBlokYText"
     var sagIBTextY            = "1m";
     var sagIBTextYPosition    = new THREE.Vector3(sagIBKonum.x + x3 / 2,meshPosY +2, 102)
     var sagIBTextYRotation    = new THREE.Vector3(0, 0 , 90);
@@ -300,7 +301,7 @@ function initializeGL(canvas , eventSource) {
     var sagSIBKonum            = new THREE.Vector3(sagIBKonum.x + x3 + 2 , meshPosY,0);
     var sagSIBFrame            = true;
     sagSonBlokOBJ             = new BlokObje(sagSIBParams,sagSIBCizgiSayi,blokColor,
-                                 sagSIBKonum,sagSIBFrame,frameColor,frameWitdh,sagSonBlok);
+                                             sagSIBKonum,sagSIBFrame,frameColor,frameWitdh,sagSonBlok);
     yeniBlokObje(sagSonBlokOBJ);
 
 
@@ -323,7 +324,7 @@ function initializeGL(canvas , eventSource) {
     var sagSIBYKArrowRenk      = 0x8c0031
 
     sagSIBYKCizgi = new KilavuzCizgi(sagSIBYCizgiAdi,sagSIBYKCizgiPos,sagSIBYKCizgiUzunluk,sagSIBYKCizgiRotation,
-                                      sagSIBYKCizgiRenk,sagSIBYKCizgiSize,sagSIBYKArrowRenk,sagSonBlok);
+                                     sagSIBYKCizgiRenk,sagSIBYKCizgiSize,sagSIBYKArrowRenk,sagSonBlok);
 
 
     var qminTextYAdi         = "QminYText"
@@ -345,7 +346,7 @@ function initializeGL(canvas , eventSource) {
     var qminYKArrowRenk      = 0x5da9b5
 
     qminYKCizgi = new KilavuzCizgi(qminYCizgiAdi,qminYKCizgiPos,qminYKCizgiUzunluk,qminYKCizgiRotation,
-                                      qminYKCizgiRenk,qminYKCizgiSize,qminYKArrowRenk,sagSonBlok);
+                                   qminYKCizgiRenk,qminYKCizgiSize,qminYKArrowRenk,sagSonBlok);
 
     var qmaxTextYAdi         = "QmaxYText"
     var qmaxTextY            = "1.5m";
@@ -366,7 +367,7 @@ function initializeGL(canvas , eventSource) {
     var qmaxYKArrowRenk      = 0x2c768a
 
     qmaxYKCizgi = new KilavuzCizgi(qmaxYCizgiAdi,qmaxYKCizgiPos,qmaxYKCizgiUzunluk,qmaxYKCizgiRotation,
-                                      qmaxYKCizgiRenk,qmaxYKCizgiSize,qmaxYKArrowRenk,sagSonBlok);
+                                   qmaxYKCizgiRenk,qmaxYKCizgiSize,qmaxYKArrowRenk,sagSonBlok);
 
 
 
@@ -390,15 +391,17 @@ function resizeGL(canvas) {
 var e_time = 0;
 var tX = 0 , tY = 0 , tZ = 0;
 function paintGL(canvas) {
-    var time = Date.now();
-    if(time - e_time >=1000){
-        e_time = time;
+    if(canvas.visible === true){
+        var time = Date.now();
+        if(time - e_time >=1000){
+            e_time = time;
+        }
+        objeGroup.rotation.y += ( targetRotationY - objeGroup.rotation.y ) * 0.05;
+        objeGroup.rotation.x += ( targetRotationX - objeGroup.rotation.x ) * 0.05;
+        camera.lookAt(new THREE.Vector3(-camPosX,camPosY,0));
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
     }
-    objeGroup.rotation.y += ( targetRotationY - objeGroup.rotation.y ) * 0.05;
-    objeGroup.rotation.x += ( targetRotationX - objeGroup.rotation.x ) * 0.05;
-    camera.lookAt(new THREE.Vector3(-camPosX,camPosY,0));
-    camera.updateProjectionMatrix();
-    renderer.render(scene, camera);
 }
 
 var window = new FakeWindow(0,0);
@@ -423,9 +426,9 @@ function onDocumentMouseWheel(angelX,angelY)
 
 function onDocumentMouseDown( x, y, buttons ) {
 
-    eventSource.mouseMove.connect(onDocumentMouseMove);
-    eventSource.mouseUp.connect(onDocumentMouseUp);
-    eventSource.mouseOut.connect(onDocumentMouseOut);
+    evntsource.mouseMove.connect(onDocumentMouseMove);
+    evntsource.mouseUp.connect(onDocumentMouseUp);
+    evntsource.mouseOut.connect(onDocumentMouseOut);
     mouseXOnMouseDown = x - window.innerWidth / 2;
     mouseYOnMouseDown = y - window.innerHeight / 2;
     if(buttons/*sol click*/ === 1){
@@ -456,16 +459,16 @@ function onDocumentMouseMove( x, y ) {
 }
 
 function onDocumentMouseUp( x, y ) {
-    eventSource.mouseMove.disconnect(onDocumentMouseMove);
-    eventSource.mouseUp.disconnect(onDocumentMouseUp);
-    eventSource.mouseOut.disconnect(onDocumentMouseOut);
+    evntsource.mouseMove.disconnect(onDocumentMouseMove);
+    evntsource.mouseUp.disconnect(onDocumentMouseUp);
+    evntsource.mouseOut.disconnect(onDocumentMouseOut);
 
 }
 
 function onDocumentMouseOut() {
-    eventSource.mouseMove.disconnect(onDocumentMouseMove);
-    eventSource.mouseUp.disconnect(onDocumentMouseUp);
-    eventSource.mouseOut.disconnect(onDocumentMouseOut);
+    evntsource.mouseMove.disconnect(onDocumentMouseMove);
+    evntsource.mouseUp.disconnect(onDocumentMouseUp);
+    evntsource.mouseOut.disconnect(onDocumentMouseOut);
 }
 function changeBoyutOBJ(hangiNesne,newBoyut,Sonuc){
     if(Sonuc === 0 || Sonuc === undefined || Sonuc === "") Sonuc = false;

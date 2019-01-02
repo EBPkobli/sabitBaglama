@@ -39,5 +39,6 @@
         <file>Islemler.js</file>
         <file>HataKontrol.js</file>
         <file>TextDoldurucu.js</file>
+        <file>palplansCanvas.js</file>
     </qresource>
 </RCC>

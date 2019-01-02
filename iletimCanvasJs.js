@@ -265,15 +265,17 @@ function resizeGL(canvas) {
 var e_time = 0;
 var tX = 0 , tY = 0 , tZ = 0;
 function paintGL(canvas) {
-    var time = Date.now();
-    if(time - e_time >=1000){
-        e_time = time;
+    if(canvas.visible === true){
+        var time = Date.now();
+        if(time - e_time >=1000){
+            e_time = time;
+        }
+        objeGroup.rotation.y += ( targetRotationY - objeGroup.rotation.y ) * 0.05;
+        objeGroup.rotation.x += ( targetRotationX - objeGroup.rotation.x ) * 0.05;
+        camera.lookAt(new THREE.Vector3(-camPosX,camPosY,0));
+        camera.updateProjectionMatrix();
+        renderer.render(scene, camera);
     }
-    objeGroup.rotation.y += ( targetRotationY - objeGroup.rotation.y ) * 0.05;
-    objeGroup.rotation.x += ( targetRotationX - objeGroup.rotation.x ) * 0.05;
-    camera.lookAt(new THREE.Vector3(-camPosX,camPosY,0));
-    camera.updateProjectionMatrix();
-    renderer.render(scene, camera);
 }
 
 var window = new FakeWindow(0,0);
