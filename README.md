@@ -1,2 +1,2 @@
 # sabitBaglama
-Su yapıları dersi için yaptığım ödev.
+Su yapıları dersi için yaptığım ödev. QT QML,ThreeJS.
